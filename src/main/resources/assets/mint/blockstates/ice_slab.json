@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "mint:block/ice_slab" },
+    "type=top": { "model": "mint:block/ice_slab_top" },
+    "type=double": { "model": "minecraft:block/ice" }
+  }
+}

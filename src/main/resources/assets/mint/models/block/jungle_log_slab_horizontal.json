@@ -1,0 +1,9 @@
+{
+  "parent": "mint:block/slab_horizontal",
+  "textures": {
+    "bottom": "minecraft:block/jungle_log",
+    "top": "mint:block/jungle_log_side",
+    "x": "minecraft:block/jungle_log",
+    "z": "minecraft:block/jungle_log_top"
+  }
+}

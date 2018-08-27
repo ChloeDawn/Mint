@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.7.7",
+  "package": "net.insomniakitten.mint.mixin",
+  "refmap": "mixins.mint.refmap.json",
+  "mixins": [
+    "BlockBreakableMixin",
+    "BlockSpreadableMixin",
+    "ItemAxeMixin",
+    "ItemSpadeMixin",
+    "ParticleDiggingMixin"
+  ]
+}

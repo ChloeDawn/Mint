@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "axis=x,type=bottom": { "model": "mint:block/spruce_log_slab_horizontal", "y": 90 },
+    "axis=x,type=top": { "model": "mint:block/spruce_log_slab_top_horizontal", "y": 90 },
+    "axis=x,type=double": { "model": "minecraft:block/spruce_log", "x": 90, "y": 90 },
+    "axis=y,type=bottom": { "model": "mint:block/spruce_log_slab" },
+    "axis=y,type=top": { "model": "mint:block/spruce_log_slab_top" },
+    "axis=y,type=double": { "model": "minecraft:block/spruce_log" },
+    "axis=z,type=bottom": { "model": "mint:block/spruce_log_slab_horizontal" },
+    "axis=z,type=top": { "model": "mint:block/spruce_log_slab_top_horizontal" },
+    "axis=z,type=double": { "model": "minecraft:block/spruce_log", "x": 90 }
+  }
+}

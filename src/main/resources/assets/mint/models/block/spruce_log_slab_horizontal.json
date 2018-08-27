@@ -1,0 +1,9 @@
+{
+  "parent": "mint:block/slab_horizontal",
+  "textures": {
+    "bottom": "minecraft:block/spruce_log",
+    "top": "mint:block/spruce_log_side",
+    "x": "minecraft:block/spruce_log",
+    "z": "minecraft:block/spruce_log_top"
+  }
+}

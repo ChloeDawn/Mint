@@ -1,0 +1,9 @@
+{
+  "parent": "mint:block/slab_horizontal",
+  "textures": {
+    "bottom": "minecraft:block/oak_log",
+    "top": "mint:block/oak_log_side",
+    "x": "minecraft:block/oak_log",
+    "z": "minecraft:block/oak_log_top"
+  }
+}

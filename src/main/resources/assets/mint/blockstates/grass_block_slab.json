@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "type=bottom": { "model": "mint:block/grass_block_slab" },
+    "snowy=false,type=top": { "model": "mint:block/grass_block_slab_top" },
+    "snowy=false,type=double": { "model": "minecraft:block/grass_block" },
+    "snowy=true,type=top": { "model": "mint:block/grass_block_slab_top_snow" },
+    "snowy=true,type=double": { "model": "minecraft:block/grass_block_snow" }
+  }
+}

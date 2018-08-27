@@ -1,0 +1,9 @@
+{
+  "parent": "mint:block/slab_top_horizontal",
+  "textures": {
+    "bottom": "mint:block/birch_log_side",
+    "top": "minecraft:block/birch_log",
+    "x": "minecraft:block/birch_log",
+    "z": "minecraft:block/birch_log_top"
+  }
+}

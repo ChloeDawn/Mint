@@ -1,0 +1,20 @@
+{
+  "__comment": "Copyright © InsomniaKitten 2018",
+  "textures": {
+    "particle": "#top"
+  },
+  "elements": [
+    {
+      "from": [ 0, 8, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down": { "uv": [ 0, 0, 16, 16 ], "texture": "#bottom" },
+        "up": { "uv": [ 0, 0, 16, 16 ], "texture": "#top", "cullface": "up" },
+        "north": { "uv": [ 0, 0, 16, 8 ], "texture": "#z", "cullface": "north" },
+        "south": { "uv": [ 0, 0, 16, 8 ], "texture": "#z", "cullface": "south" },
+        "west": { "uv": [ 0, 0, 8, 16 ], "texture": "#x", "cullface": "west", "rotation": 90 },
+        "east": { "uv": [ 0, 0, 8, 16 ], "texture": "#x", "cullface": "east", "rotation": 90 }
+      }
+    }
+  ]
+}

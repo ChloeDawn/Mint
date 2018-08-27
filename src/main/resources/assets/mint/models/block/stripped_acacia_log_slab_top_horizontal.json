@@ -1,0 +1,9 @@
+{
+  "parent": "mint:block/slab_top_horizontal",
+  "textures": {
+    "bottom": "mint:block/stripped_acacia_log_side",
+    "top": "minecraft:block/stripped_acacia_log",
+    "x": "minecraft:block/stripped_acacia_log",
+    "z": "minecraft:block/stripped_acacia_log_top"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "mint:block/ice_pillar_end",
+    "side": "mint:block/ice_pillar"
+  }
+}
