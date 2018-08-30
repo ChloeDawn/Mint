@@ -12,13 +12,11 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.state.IStateHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 /**
@@ -29,53 +27,48 @@ import java.util.Map;
 @Mixin(ItemAxe.class)
 @SuppressWarnings("ProtectedField")
 public final class ItemAxeMixin {
-    /**
-     * Field shadowed and de-finalized by {@link ItemAxeMixin}
-     */
-    @Shadow
-    @Final
-    @Mutable
-    protected static Map<Block, Block> field_203176_a;
+    private static final Map<Block, Block> MINT_BLOCK_STRIPPING_MAP = ImmutableMap.<Block, Block>builder()
+        .put(MintBlocks.byName("oak_log_stairs"),       MintBlocks.byName("stripped_oak_log_stairs"))
+        .put(MintBlocks.byName("spruce_log_stairs"),    MintBlocks.byName("stripped_spruce_log_stairs"))
+        .put(MintBlocks.byName("birch_log_stairs"),     MintBlocks.byName("stripped_birch_log_stairs"))
+        .put(MintBlocks.byName("jungle_log_stairs"),    MintBlocks.byName("stripped_jungle_log_stairs"))
+        .put(MintBlocks.byName("acacia_log_stairs"),    MintBlocks.byName("stripped_acacia_log_stairs"))
+        .put(MintBlocks.byName("dark_oak_log_stairs"),  MintBlocks.byName("stripped_dark_oak_log_stairs"))
+        .put(MintBlocks.byName("oak_wood_stairs"),      MintBlocks.byName("stripped_oak_wood_stairs"))
+        .put(MintBlocks.byName("spruce_wood_stairs"),   MintBlocks.byName("stripped_spruce_wood_stairs"))
+        .put(MintBlocks.byName("birch_wood_stairs"),    MintBlocks.byName("stripped_birch_wood_stairs"))
+        .put(MintBlocks.byName("jungle_wood_stairs"),   MintBlocks.byName("stripped_jungle_wood_stairs"))
+        .put(MintBlocks.byName("acacia_wood_stairs"),   MintBlocks.byName("stripped_acacia_wood_stairs"))
+        .put(MintBlocks.byName("dark_oak_wood_stairs"), MintBlocks.byName("stripped_dark_oak_wood_stairs"))
+        .put(MintBlocks.byName("oak_log_slab"),         MintBlocks.byName("stripped_oak_log_slab"))
+        .put(MintBlocks.byName("spruce_log_slab"),      MintBlocks.byName("stripped_spruce_log_slab"))
+        .put(MintBlocks.byName("birch_log_slab"),       MintBlocks.byName("stripped_birch_log_slab"))
+        .put(MintBlocks.byName("jungle_log_slab"),      MintBlocks.byName("stripped_jungle_log_slab"))
+        .put(MintBlocks.byName("acacia_log_slab"),      MintBlocks.byName("stripped_acacia_log_slab"))
+        .put(MintBlocks.byName("dark_oak_log_slab"),    MintBlocks.byName("stripped_dark_oak_log_slab"))
+        .put(MintBlocks.byName("oak_wood_slab"),        MintBlocks.byName("stripped_oak_wood_slab"))
+        .put(MintBlocks.byName("spruce_wood_slab"),     MintBlocks.byName("stripped_spruce_wood_slab"))
+        .put(MintBlocks.byName("birch_wood_slab"),      MintBlocks.byName("stripped_birch_wood_slab"))
+        .put(MintBlocks.byName("jungle_wood_slab"),     MintBlocks.byName("stripped_jungle_wood_slab"))
+        .put(MintBlocks.byName("acacia_wood_slab"),     MintBlocks.byName("stripped_acacia_wood_slab"))
+        .put(MintBlocks.byName("dark_oak_wood_slab"),   MintBlocks.byName("stripped_dark_oak_wood_slab"))
+        .build();
 
-    static {
-        ItemAxeMixin.field_203176_a = ItemAxeMixin.rewriteBlockStrippingMap(ItemAxeMixin.field_203176_a);
-    }
-
     /**
-     * Rebuilds the immutable map of blocks that axes can strip from log to wood, appending
-     * new blocks obtained through callbacks to {@link MintBlocks#byName(String)}
+     * Looks up a value in {@link ItemAxeMixin#MINT_BLOCK_STRIPPING_MAP} if the value from the
+     * prior lookup in {@link ItemAxe#field_203176_a} returns `null`
      *
-     * @param oldMap The original map to be re-appended to the {@link ImmutableMap.Builder}
-     * @return A new {@link ImmutableMap} containing the old map plus the new entries
+     * @param map The original map in {@link ItemAxe}
+     * @param key The key being looked up in the map
+     * @return A value from the original map, or one from Mint's map if the value was null
      * @author InsomniaKitten
      */
-    private static ImmutableMap<Block, Block> rewriteBlockStrippingMap(final Map<Block, Block> oldMap) {
-        return ImmutableMap.<Block, Block>builder().putAll(oldMap)
-            .put(MintBlocks.byName("oak_log_stairs"),       MintBlocks.byName("stripped_oak_log_stairs"))
-            .put(MintBlocks.byName("spruce_log_stairs"),    MintBlocks.byName("stripped_spruce_log_stairs"))
-            .put(MintBlocks.byName("birch_log_stairs"),     MintBlocks.byName("stripped_birch_log_stairs"))
-            .put(MintBlocks.byName("jungle_log_stairs"),    MintBlocks.byName("stripped_jungle_log_stairs"))
-            .put(MintBlocks.byName("acacia_log_stairs"),    MintBlocks.byName("stripped_acacia_log_stairs"))
-            .put(MintBlocks.byName("dark_oak_log_stairs"),  MintBlocks.byName("stripped_dark_oak_log_stairs"))
-            .put(MintBlocks.byName("oak_wood_stairs"),      MintBlocks.byName("stripped_oak_wood_stairs"))
-            .put(MintBlocks.byName("spruce_wood_stairs"),   MintBlocks.byName("stripped_spruce_wood_stairs"))
-            .put(MintBlocks.byName("birch_wood_stairs"),    MintBlocks.byName("stripped_birch_wood_stairs"))
-            .put(MintBlocks.byName("jungle_wood_stairs"),   MintBlocks.byName("stripped_jungle_wood_stairs"))
-            .put(MintBlocks.byName("acacia_wood_stairs"),   MintBlocks.byName("stripped_acacia_wood_stairs"))
-            .put(MintBlocks.byName("dark_oak_wood_stairs"), MintBlocks.byName("stripped_dark_oak_wood_stairs"))
-            .put(MintBlocks.byName("oak_log_slab"),         MintBlocks.byName("stripped_oak_log_slab"))
-            .put(MintBlocks.byName("spruce_log_slab"),      MintBlocks.byName("stripped_spruce_log_slab"))
-            .put(MintBlocks.byName("birch_log_slab"),       MintBlocks.byName("stripped_birch_log_slab"))
-            .put(MintBlocks.byName("jungle_log_slab"),      MintBlocks.byName("stripped_jungle_log_slab"))
-            .put(MintBlocks.byName("acacia_log_slab"),      MintBlocks.byName("stripped_acacia_log_slab"))
-            .put(MintBlocks.byName("dark_oak_log_slab"),    MintBlocks.byName("stripped_dark_oak_log_slab"))
-            .put(MintBlocks.byName("oak_wood_slab"),        MintBlocks.byName("stripped_oak_wood_slab"))
-            .put(MintBlocks.byName("spruce_wood_slab"),     MintBlocks.byName("stripped_spruce_wood_slab"))
-            .put(MintBlocks.byName("birch_wood_slab"),      MintBlocks.byName("stripped_birch_wood_slab"))
-            .put(MintBlocks.byName("jungle_wood_slab"),     MintBlocks.byName("stripped_jungle_wood_slab"))
-            .put(MintBlocks.byName("acacia_wood_slab"),     MintBlocks.byName("stripped_acacia_wood_slab"))
-            .put(MintBlocks.byName("dark_oak_wood_slab"),   MintBlocks.byName("stripped_dark_oak_wood_slab"))
-            .build();
+    @SuppressWarnings("SuspiciousMethodCalls")
+    @Redirect(method = "onItemUse", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
+    private Object getValueOrMintValueIfNull(final Map map, final Object key) {
+        @Nullable val value = map.get(key);
+
+        return value == null ? ItemAxeMixin.MINT_BLOCK_STRIPPING_MAP.get(key) : value;
     }
 
     /**
