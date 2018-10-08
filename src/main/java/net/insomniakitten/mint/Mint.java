@@ -25,14 +25,7 @@ public final class Mint {
     @Nullable
     private static Boolean deobfRuntime;
 
-    /**
-     * This is a utility class and should not be instantiated, even reflectively
-     *
-     * @throws UnsupportedOperationException When the constructor is invoked
-     */
-    private Mint() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(this.getClass().getName() + " is a utility class");
-    }
+    private Mint() {}
 
     /**
      * Prepends the given {@link String} with Mint's namespace

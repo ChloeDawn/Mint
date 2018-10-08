@@ -80,7 +80,7 @@ public final class MintItems implements ItemAdder {
             throw new ConcurrentModificationException("Items still registering");
         }
 
-        return Objects.requireNonNull(Item.REGISTRY.getKey(item));
+        return Objects.requireNonNull(Item.REGISTRY.getKey(item), "name");
     }
 
     /**

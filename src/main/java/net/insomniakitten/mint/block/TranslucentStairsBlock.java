@@ -33,11 +33,11 @@ public class TranslucentStairsBlock extends SimpleStairsBlock {
             return false;
         }
 
-        val facing = state.getValue(BlockStairs.FACING);
-        val otherFacing = other.getValue(BlockStairs.FACING);
+        val facing = state.get(BlockStairs.FACING);
+        val otherFacing = other.get(BlockStairs.FACING);
 
         if (face == EnumFacing.UP) {
-            val half = other.getValue(BlockStairs.HALF);
+            val half = other.get(BlockStairs.HALF);
 
             return half != Half.TOP || otherFacing == facing;
         }

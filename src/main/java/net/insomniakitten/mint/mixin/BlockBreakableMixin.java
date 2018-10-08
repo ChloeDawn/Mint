@@ -42,7 +42,7 @@ public final class BlockBreakableMixin {
                 return;
             }
 
-            if (SlabType.DOUBLE == other.getValue(BlockStateProperties.SLAB_TYPE)) {
+            if (SlabType.DOUBLE == other.get(BlockStateProperties.SLAB_TYPE)) {
                 cir.setReturnValue(true);
                 return;
             }
@@ -54,7 +54,7 @@ public final class BlockBreakableMixin {
                 return;
             }
 
-            if (face.getOpposite() == other.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            if (face.getOpposite() == other.get(BlockStateProperties.HORIZONTAL_FACING)) {
                 cir.setReturnValue(true);
             }
         }

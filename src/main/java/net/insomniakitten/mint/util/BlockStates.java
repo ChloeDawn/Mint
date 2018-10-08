@@ -13,14 +13,7 @@ import net.minecraft.state.IStateHolder;
  * @author InsomniaKitten
  */
 public final class BlockStates {
-    /**
-     * This is a utility class and should not be instantiated, even reflectively
-     *
-     * @throws UnsupportedOperationException When the constructor is invoked
-     */
-    private BlockStates() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(this.getClass().getName() + " is a utility class");
-    }
+    private BlockStates() {}
 
     /**
      * Copies all (viable) properties from the source {@link IBlockState} to the
@@ -36,12 +29,12 @@ public final class BlockStates {
         val properties = target.getProperties();
         var copy = target;
 
-        for (val entry : source.toMap().entrySet()) {
+        for (val entry : source.getValues().entrySet()) {
             val property = (IProperty) entry.getKey();
             val value = (Comparable) entry.getValue();
 
             if (properties.contains(property)) {
-                copy = copy.withProperty(property, value);
+                copy = copy.with(property, value);
             }
         }
 

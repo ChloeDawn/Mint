@@ -123,7 +123,7 @@ public interface SpreadableBlock {
                         continue;
                     }
 
-                    flower = flowers.get(0).func_202354_a(random, offset);
+                    flower = flowers.get(0).getRandomFlower(random, offset);
                 }
                 if (flower.isValidPosition(world, offset)) {
                     world.setBlockState(offset, flower, 3);

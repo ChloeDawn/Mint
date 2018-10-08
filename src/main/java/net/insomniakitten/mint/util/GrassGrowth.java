@@ -26,14 +26,7 @@ public final class GrassGrowth {
         MintBlocks.byName("dirt_slab"),   MintBlocks.byName("grass_block_slab")
     );
 
-    /**
-     * This is a utility class and should not be instantiated, even reflectively
-     *
-     * @throws UnsupportedOperationException When the constructor is invoked
-     */
-    private GrassGrowth() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(this.getClass().getName() + " is a utility class");
-    }
+    private GrassGrowth() {}
 
     /**
      * Queries the {@link GrassGrowth#CONVERSION_MAP} to determine the

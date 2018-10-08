@@ -52,8 +52,8 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
 
     @Override
     public Fluid pickupFluid(final IWorld world, final BlockPos position, final IBlockState state) {
-        if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-            world.setBlockState(position, state.withProperty(BlockStateProperties.WATERLOGGED, false), 3);
+        if (state.get(BlockStateProperties.WATERLOGGED)) {
+            world.setBlockState(position, state.with(BlockStateProperties.WATERLOGGED, false), 3);
             return Fluids.WATER;
         }
 
@@ -62,15 +62,15 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
 
     @Override
     public boolean canContainFluid(final IBlockReader reader, final BlockPos position, final IBlockState state, final Fluid fluid) {
-        return fluid == Fluids.WATER && !state.getValue(BlockStateProperties.WATERLOGGED);
+        return fluid == Fluids.WATER && !state.get(BlockStateProperties.WATERLOGGED);
     }
 
     @Override
     public boolean receiveFluid(final IWorld world, final BlockPos position, final IBlockState state, final IFluidState fluidState) {
-        if (Fluids.WATER == fluidState.getFluid() && !state.getValue(BlockStateProperties.WATERLOGGED)) {
+        if (Fluids.WATER == fluidState.getFluid() && !state.get(BlockStateProperties.WATERLOGGED)) {
             if (!world.isRemote()) {
-                world.setBlockState(position, state.withProperty(BlockStateProperties.WATERLOGGED, true), 3);
-                world.getPendingFluidTicks().scheduleUpdate(position, Fluids.WATER, Fluids.WATER.getTickRate(world));
+                world.setBlockState(position, state.with(BlockStateProperties.WATERLOGGED, true), 3);
+                world.getPendingFluidTicks().scheduleTick(position, Fluids.WATER, Fluids.WATER.getTickRate(world));
             }
 
             return true;
@@ -83,8 +83,8 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Deprecated
     public IBlockState updatePostPlacement(final IBlockState state, final EnumFacing face, final IBlockState other, final IWorld world, final BlockPos position, final BlockPos offset) {
         if (state.isValidPosition(world, position)) {
-            if (state.getValue(BlockStateProperties.WATERLOGGED)) {
-                world.getPendingFluidTicks().scheduleUpdate(position, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            if (state.get(BlockStateProperties.WATERLOGGED)) {
+                world.getPendingFluidTicks().scheduleTick(position, Fluids.WATER, Fluids.WATER.getTickRate(world));
             }
 
             return super.updatePostPlacement(state, face, other, world, position, offset);
@@ -96,19 +96,19 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public boolean isFullCube(final IBlockState state) {
-        return state.getValue(BlockStateProperties.LAYERS_1_8) == 8;
+        return state.get(BlockStateProperties.LAYERS_1_8) == 8;
     }
 
     @Override
     @Deprecated
     public boolean allowsMovement(final IBlockState state, final IBlockReader reader, final BlockPos position, final PathType pathType) {
-        return PathType.LAND == pathType && state.getValue(BlockStateProperties.LAYERS_1_8) < 5;
+        return PathType.LAND == pathType && state.get(BlockStateProperties.LAYERS_1_8) < 5;
     }
 
     @Override
     @Deprecated
     public boolean isReplaceable(final IBlockState state, final BlockItemUseContext context) {
-        val layers = state.getValue(BlockStateProperties.LAYERS_1_8);
+        val layers = state.get(BlockStateProperties.LAYERS_1_8);
 
         if (context.getItem().getItem() != this.asItem() || 8 <= layers) {
             return 1 == layers;
@@ -130,13 +130,13 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public VoxelShape getShape(final IBlockState state, final IBlockReader reader, final BlockPos position) {
-        return SandLayerBlock.VOXEL_SHAPES[state.getValue(BlockStateProperties.LAYERS_1_8)];
+        return SandLayerBlock.VOXEL_SHAPES[state.get(BlockStateProperties.LAYERS_1_8)];
     }
 
     @Override
     @Deprecated
     public VoxelShape getCollisionShape(final IBlockState state, final IBlockReader reader, final BlockPos position) {
-        return SandLayerBlock.VOXEL_SHAPES[state.getValue(BlockStateProperties.LAYERS_1_8) - 1];
+        return SandLayerBlock.VOXEL_SHAPES[state.get(BlockStateProperties.LAYERS_1_8) - 1];
     }
 
     @Override
@@ -156,7 +156,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
         }
 
         if (below.getBlock() == this) {
-            return below.getValue(BlockStateProperties.LAYERS_1_8) == 8;
+            return below.get(BlockStateProperties.LAYERS_1_8) == 8;
         }
 
         return false;
@@ -170,16 +170,16 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
         val state = world.getBlockState(pos);
 
         if (state.getBlock() == this) {
-            val oldLayers = state.getValue(BlockStateProperties.LAYERS_1_8);
+            val oldLayers = state.get(BlockStateProperties.LAYERS_1_8);
             val newLayers = Math.min(8, oldLayers + 1);
 
-            return state.withProperty(BlockStateProperties.LAYERS_1_8, newLayers);
+            return state.with(BlockStateProperties.LAYERS_1_8, newLayers);
         }
 
         val fluidState = world.getFluidState(pos);
         val waterlogged = Fluids.WATER == fluidState.getFluid();
 
-        return this.getDefaultState().withProperty(BlockStateProperties.WATERLOGGED, waterlogged);
+        return this.getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
         player.addStat(StatList.BLOCK_MINED.get(this));
         player.addExhaustion(0.005F);
 
-        val layers = state.getValue(BlockStateProperties.LAYERS_1_8);
+        val layers = state.get(BlockStateProperties.LAYERS_1_8);
 
         if (8 == layers) {
             Block.spawnAsEntity(world, position, new ItemStack(Blocks.SAND));
@@ -207,7 +207,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public IFluidState getFluidState(final IBlockState state) {
-        if (state.getValue(BlockStateProperties.WATERLOGGED)) {
+        if (state.get(BlockStateProperties.WATERLOGGED)) {
             return Fluids.WATER.getStillFluidState(false);
         }
 
@@ -223,8 +223,8 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     private void setDefaultState() {
         var state = this.getStateContainer().getBaseState();
 
-        state = state.withProperty(BlockStateProperties.LAYERS_1_8, 1);
-        state = state.withProperty(BlockStateProperties.WATERLOGGED, false);
+        state = state.with(BlockStateProperties.LAYERS_1_8, 1);
+        state = state.with(BlockStateProperties.WATERLOGGED, false);
 
         this.setDefaultState(state);
     }

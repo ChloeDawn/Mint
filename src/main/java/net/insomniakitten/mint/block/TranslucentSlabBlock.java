@@ -28,7 +28,7 @@ public class TranslucentSlabBlock extends SimpleSlabBlock {
             return false;
         }
 
-        val type = other.getValue(BlockStateProperties.SLAB_TYPE);
+        val type = other.get(BlockStateProperties.SLAB_TYPE);
 
         if (SlabType.DOUBLE == type) {
             return true;
@@ -38,7 +38,7 @@ public class TranslucentSlabBlock extends SimpleSlabBlock {
             return face == (type == SlabType.TOP ? EnumFacing.DOWN : EnumFacing.UP);
         }
 
-        return state.getValue(BlockStateProperties.SLAB_TYPE) == type;
+        return state.get(BlockStateProperties.SLAB_TYPE) == type;
     }
 
     @Override

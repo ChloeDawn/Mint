@@ -84,7 +84,7 @@ public final class MintClient implements TileEntityRendererAdder {
 
         this.state = RegistrationState.REGISTERING;
 
-        @Nullable val blockColors = Minecraft.getMinecraft().getBlockColors();
+        @Nullable val blockColors = Minecraft.getInstance().getBlockColors();
         @Nullable val itemColors = this.getItemColorsInstanceReflectively();
 
         if (blockColors == null) {
@@ -152,7 +152,7 @@ public final class MintClient implements TileEntityRendererAdder {
 
             fieldReference.setAccessible(true);
 
-            return (ItemColors) fieldReference.get(Minecraft.getMinecraft());
+            return (ItemColors) fieldReference.get(Minecraft.getInstance());
         } catch (final NoSuchFieldException | IllegalAccessException e) {
             throw new FieldLookupException(fieldName, e);
         }

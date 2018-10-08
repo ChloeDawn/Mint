@@ -27,8 +27,8 @@ public class RotatedStairsBlock extends BlockStairs {
     @Override
     @Deprecated
     public MapColor getMapColor(final IBlockState state, final IBlockReader reader, final BlockPos position) {
-        val axis = state.getValue(BlockRotatedPillar.AXIS);
-        val materialState = this.material.getDefaultState().withProperty(BlockRotatedPillar.AXIS, axis);
+        val axis = state.get(BlockRotatedPillar.AXIS);
+        val materialState = this.material.getDefaultState().with(BlockRotatedPillar.AXIS, axis);
 
         return this.material.getMapColor(materialState, reader, position);
     }
@@ -44,17 +44,17 @@ public class RotatedStairsBlock extends BlockStairs {
 
         val axis = context.getFace().getAxis();
 
-        return state.withProperty(BlockStateProperties.AXIS, axis);
+        return state.with(BlockStateProperties.AXIS, axis);
     }
 
     @Override
     @Deprecated
-    public IBlockState withRotation(final IBlockState state, final Rotation rotation) {
+    public IBlockState rotate(final IBlockState state, final Rotation rotation) {
         if (rotation == Rotation.COUNTERCLOCKWISE_90 || rotation == Rotation.CLOCKWISE_90) {
-            val axis = state.getValue(BlockRotatedPillar.AXIS);
+            val axis = state.get(BlockRotatedPillar.AXIS);
 
             if (axis.isHorizontal()) {
-                return state.withProperty(BlockRotatedPillar.AXIS, axis == Axis.X ? Axis.Z : Axis.X);
+                return state.with(BlockRotatedPillar.AXIS, axis == Axis.X ? Axis.Z : Axis.X);
             }
         }
 

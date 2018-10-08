@@ -53,7 +53,7 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
 
     @Override
     protected ItemStack getSilkTouchDrop(final IBlockState state) {
-        if (SlabType.DOUBLE == state.getValue(BlockStateProperties.SLAB_TYPE)) {
+        if (SlabType.DOUBLE == state.get(BlockStateProperties.SLAB_TYPE)) {
             return new ItemStack(this, 2);
         }
 
@@ -62,17 +62,17 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
 
     @Override
     public boolean canGrow(final IBlockReader reader, final BlockPos position, final IBlockState state, final boolean isClient) {
-        return SlabType.BOTTOM != state.getValue(BlockStateProperties.SLAB_TYPE);
+        return SlabType.BOTTOM != state.get(BlockStateProperties.SLAB_TYPE);
     }
 
     @Override
     public boolean canUseBonemeal(final World world, final Random random, final BlockPos position, final IBlockState state) {
-        return SlabType.BOTTOM != state.getValue(BlockStateProperties.SLAB_TYPE);
+        return SlabType.BOTTOM != state.get(BlockStateProperties.SLAB_TYPE);
     }
 
     @Override
     public void grow(final World world, final Random random, final BlockPos position, final IBlockState state) {
-        if (SlabType.BOTTOM != state.getValue(BlockStateProperties.SLAB_TYPE)) {
+        if (SlabType.BOTTOM != state.get(BlockStateProperties.SLAB_TYPE)) {
             this.onGrow(world, position, random);
         }
     }
@@ -93,11 +93,11 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
         @Nullable val state = super.getStateForPlacement(context);
 
-        if (state != null && SlabType.BOTTOM != state.getValue(BlockStateProperties.SLAB_TYPE)) {
+        if (state != null && SlabType.BOTTOM != state.get(BlockStateProperties.SLAB_TYPE)) {
             val up = context.getPos().up();
             val above = context.getWorld().getBlockState(up);
 
-            return state.withProperty(BlockStateProperties.SNOWY, this.isSnowBlock(above));
+            return state.with(BlockStateProperties.SNOWY, this.isSnowBlock(above));
         }
 
         return state;
@@ -105,8 +105,8 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
 
     @Override
     public IBlockState updatePostPlacement(final IBlockState state, final EnumFacing face, final IBlockState other, final IWorld world, final BlockPos position, final BlockPos offset) {
-        if (face == EnumFacing.UP && SlabType.BOTTOM != state.getValue(BlockStateProperties.SLAB_TYPE)) {
-            return state.withProperty(BlockStateProperties.SNOWY, this.isSnowBlock(other));
+        if (face == EnumFacing.UP && SlabType.BOTTOM != state.get(BlockStateProperties.SLAB_TYPE)) {
+            return state.with(BlockStateProperties.SNOWY, this.isSnowBlock(other));
         }
 
         return super.updatePostPlacement(state, face, other, world, position, offset);
@@ -122,6 +122,6 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
         val stateContainer = this.getStateContainer();
         val baseState = stateContainer.getBaseState();
 
-        this.setDefaultState(baseState.withProperty(BlockStateProperties.SNOWY, false));
+        this.setDefaultState(baseState.with(BlockStateProperties.SNOWY, false));
     }
 }

@@ -90,7 +90,7 @@ public final class MintBlocks implements BlockAdder {
             throw new ConcurrentModificationException("Blocks still registering");
         }
 
-        return Block.REGISTRY.getKey(block);
+        return Objects.requireNonNull(Block.REGISTRY.getKey(block), "name");
     }
 
     /**

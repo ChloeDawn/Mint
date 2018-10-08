@@ -56,7 +56,7 @@ public final class ItemAxeMixin {
 
     /**
      * Looks up a value in {@link ItemAxeMixin#MINT_BLOCK_STRIPPING_MAP} if the value from the
-     * prior lookup in {@link ItemAxe#field_203176_a} returns `null`
+     * prior lookup in {@link ItemAxe#BLOCK_STRIPPING_MAP} returns `null`
      *
      * @param map The original map in {@link ItemAxe}
      * @param key The key being looked up in the map

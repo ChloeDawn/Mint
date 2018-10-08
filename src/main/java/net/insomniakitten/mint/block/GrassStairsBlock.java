@@ -58,11 +58,11 @@ public class GrassStairsBlock extends SimpleStairsBlock implements SpreadableBlo
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
         @Nullable val state = super.getStateForPlacement(context);
 
-        if (state != null && state.getValue(BlockStateProperties.HALF) == Half.TOP) {
+        if (state != null && state.get(BlockStateProperties.HALF) == Half.TOP) {
             val up = context.getPos().up();
             val above = context.getWorld().getBlockState(up);
 
-            return state.withProperty(BlockStateProperties.SNOWY, this.isSnowBlock(above));
+            return state.with(BlockStateProperties.SNOWY, this.isSnowBlock(above));
         }
 
         return state;
@@ -70,8 +70,8 @@ public class GrassStairsBlock extends SimpleStairsBlock implements SpreadableBlo
 
     @Override
     public IBlockState updatePostPlacement(final IBlockState state, final EnumFacing face, final IBlockState other, final IWorld world, final BlockPos position, final BlockPos offset) {
-        if (face == EnumFacing.UP && Half.TOP == state.getValue(BlockStateProperties.HALF)) {
-            return state.withProperty(BlockStateProperties.SNOWY, this.isSnowBlock(other));
+        if (face == EnumFacing.UP && Half.TOP == state.get(BlockStateProperties.HALF)) {
+            return state.with(BlockStateProperties.SNOWY, this.isSnowBlock(other));
         }
 
         return super.updatePostPlacement(state, face, other, world, position, offset);
@@ -85,17 +85,17 @@ public class GrassStairsBlock extends SimpleStairsBlock implements SpreadableBlo
 
     @Override
     public boolean canGrow(final IBlockReader reader, final BlockPos position, final IBlockState state, final boolean isClient) {
-        return Half.TOP == state.getValue(BlockStateProperties.HALF);
+        return Half.TOP == state.get(BlockStateProperties.HALF);
     }
 
     @Override
     public boolean canUseBonemeal(final World world, final Random random, final BlockPos position, final IBlockState state) {
-        return Half.TOP == state.getValue(BlockStateProperties.HALF);
+        return Half.TOP == state.get(BlockStateProperties.HALF);
     }
 
     @Override
     public void grow(final World world, final Random random, final BlockPos position, final IBlockState state) {
-        if (Half.BOTTOM == state.getValue(BlockStateProperties.HALF)) {
+        if (Half.BOTTOM == state.get(BlockStateProperties.HALF)) {
             this.onGrow(world, position, random);
         }
     }
