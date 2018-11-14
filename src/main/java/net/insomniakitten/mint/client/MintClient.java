@@ -149,15 +149,15 @@ public final class MintClient implements TileEntityRendererAdder {
      */
     @Nullable
     private ItemColors getItemColorsInstanceReflectively() {
+        val fieldName = this.itemColors.getValue();
         try {
-            val fieldName = this.itemColors.getValue();
             val fieldReference = Minecraft.class.getDeclaredField(fieldName);
 
             fieldReference.setAccessible(true);
 
             return (ItemColors) fieldReference.get(Minecraft.getInstance());
         } catch (final NoSuchFieldException | IllegalAccessException e) {
-            throw new FieldLookupException(this.itemColors.getValue(), e);
+            throw new FieldLookupException(fieldName, e);
         }
     }
 }
