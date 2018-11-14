@@ -55,7 +55,7 @@ public final class Mapping {
 
     @Override
     public String toString() {
-        return "Mapping[" + this.value + "]";
+        return "Mapping['" + this.value + "']";
     }
 
     private String getMappingForEnvironment(final String notch, final String srg, final String mcp) {
