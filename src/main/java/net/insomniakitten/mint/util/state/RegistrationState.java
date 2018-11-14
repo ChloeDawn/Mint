@@ -46,26 +46,26 @@ public enum RegistrationState {
     /**
      * Determines if this state is {@link RegistrationState#UNREGISTERED}
      */
-    public boolean isUnregistered() {
+    public final boolean isUnregistered() {
         return RegistrationState.UNREGISTERED == this;
     }
 
     /**
      * Determines if this state is {@link RegistrationState#REGISTERING}
      */
-    public boolean isRegistering() {
+    public final boolean isRegistering() {
         return RegistrationState.REGISTERING == this;
     }
 
     /**
      * Determines if this state is {@link RegistrationState#REGISTERED}
      */
-    public boolean isRegistered() {
+    public final boolean isRegistered() {
         return RegistrationState.REGISTERED == this;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return this.name().toLowerCase(Locale.ROOT);
     }
 }

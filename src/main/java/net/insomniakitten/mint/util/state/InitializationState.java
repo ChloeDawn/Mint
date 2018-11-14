@@ -49,26 +49,26 @@ public enum InitializationState {
     /**
      * Determines if this state is {@link InitializationState#UNINITIALIZED}
      */
-    public boolean isUninitialized() {
+    public final boolean isUninitialized() {
         return InitializationState.UNINITIALIZED == this;
     }
 
     /**
      * Determines if this state is {@link InitializationState#INITIALIZING}
      */
-    public boolean isInitializing() {
+    public final boolean isInitializing() {
         return InitializationState.INITIALIZING == this;
     }
 
     /**
      * Determines if this state is {@link InitializationState#FINALIZED}
      */
-    public boolean isFinalized() {
+    public final boolean isFinalized() {
         return InitializationState.FINALIZED == this;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return this.name().toLowerCase(Locale.ROOT);
     }
 }
