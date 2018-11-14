@@ -304,6 +304,7 @@ public final class MintItems implements ItemAdder {
      */
     private void registerItem(final String name, final Item item) {
         final ResourceLocation key = Mint.withNamespace(name);
+
         MintItems.LOGGER.debug("Registering item '{}'", key);
         Item.register(key, item);
     }
@@ -318,6 +319,7 @@ public final class MintItems implements ItemAdder {
      */
     private void registerBlockItem(final String name, final ItemGroup group) {
         final ResourceLocation key = Mint.withNamespace(name);
+
         MintItems.LOGGER.debug("Registering block item '{}'", key);
         Item.register(MintBlocks.byName(name), group);
     }

@@ -1,5 +1,6 @@
 package net.insomniakitten.mint.client.color;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.BlockColors;
@@ -41,11 +42,9 @@ public final class BlockItemColorMultiplier implements IItemColor {
     public int getColor(final ItemStack stack, final int tintIndex) {
         final Item item = stack.getItem();
 
-        if (item instanceof ItemBlock) {
-            return this.getBlockColor((ItemBlock) item, tintIndex);
-        }
+        Preconditions.checkState(item instanceof ItemBlock, "Not a block item: " + item.getClass().getName());
 
-        throw new IllegalStateException("Not a block item: " + item.getClass().getName());
+        return this.getBlockColor((ItemBlock) item, tintIndex);
     }
 
     /**

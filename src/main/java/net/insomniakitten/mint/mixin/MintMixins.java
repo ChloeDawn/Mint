@@ -1,6 +1,7 @@
 package net.insomniakitten.mint.mixin;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 import net.insomniakitten.mint.Mint;
 import net.insomniakitten.mint.util.state.InitializationState;
 import net.insomniakitten.pylon.annotation.rift.Listener;
@@ -128,10 +129,6 @@ public final class MintMixins implements InitializationListener {
      * to the debug output of {@link MintMixins#LOGGER}
      */
     private void printDiagnostics() {
-        if (this.configuration == null && this.environment == null) {
-            throw new IllegalStateException("References not cached");
-        }
-
         this.verifyReferenceCache();
 
         // Sanity checking... If these are still null, the universe probably imploded
@@ -155,8 +152,7 @@ public final class MintMixins implements InitializationListener {
      * an {@link IllegalStateException} will be thrown
      */
     private void verifyReferenceCache() {
-        if ((this.configuration == null) == (this.environment != null)) {
-            throw new IllegalStateException("Reference cache imbalance");
-        }
+        Preconditions.checkState(this.configuration != null || this.environment != null, "References not cached");
+        Preconditions.checkState((this.configuration == null) == (this.environment == null), "Reference cache imbalance");
     }
 }

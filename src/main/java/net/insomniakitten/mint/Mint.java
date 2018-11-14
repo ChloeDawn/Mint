@@ -1,5 +1,6 @@
 package net.insomniakitten.mint;
 
+import com.google.common.base.Preconditions;
 import net.insomniakitten.pylon.annotation.rift.Mod;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -37,9 +38,7 @@ public final class Mint {
      * @throws IllegalArgumentException If the string is empty
      */
     public static ResourceLocation withNamespace(final String string) {
-        if (string.isEmpty()) {
-            throw new IllegalArgumentException("String cannot be empty");
-        }
+        Preconditions.checkArgument(!string.isEmpty(), "String cannot be empty");
 
         return new ResourceLocation(Mint.ID, string);
     }
@@ -52,9 +51,7 @@ public final class Mint {
      * @throws IllegalArgumentException If the topic is empty
      */
     public static Logger getLogger(final String topic) {
-        if (topic.isEmpty()) {
-            throw new IllegalArgumentException("Topic cannot be empty");
-        }
+        Preconditions.checkArgument(!topic.isEmpty(), "Topic cannot be empty");
 
         return LogManager.getLogger(Mint.ID + '.' + topic);
     }
