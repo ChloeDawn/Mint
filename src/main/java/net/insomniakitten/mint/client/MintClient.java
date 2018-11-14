@@ -9,6 +9,7 @@ import net.insomniakitten.mint.client.color.GrassBlockColorMultiplier;
 import net.insomniakitten.mint.init.MintBlocks;
 import net.insomniakitten.mint.init.MintItems;
 import net.insomniakitten.mint.util.FieldLookupException;
+import net.insomniakitten.mint.util.obf.Mapping;
 import net.insomniakitten.mint.util.state.RegistrationState;
 import net.insomniakitten.pylon.annotation.rift.Listener;
 import net.insomniakitten.pylon.ref.Side;
@@ -46,6 +47,9 @@ public final class MintClient implements TileEntityRendererAdder {
     static {
         Mint.setInstanceForLoader(MintClient.class, MintClient.INSTANCE);
     }
+
+    private final Mapping itemColors = Mapping.builder()
+        .notch("ay").srg("field_184128_aI").mcp("itemColors").build();
 
     private volatile RegistrationState state = RegistrationState.initial();
 
@@ -145,16 +149,15 @@ public final class MintClient implements TileEntityRendererAdder {
      */
     @Nullable
     private ItemColors getItemColorsInstanceReflectively() {
-        val fieldName = Mint.isRuntimeDeobfuscated() ? "itemColors" : "ay";
-
         try {
+            val fieldName = this.itemColors.getValue();
             val fieldReference = Minecraft.class.getDeclaredField(fieldName);
 
             fieldReference.setAccessible(true);
 
             return (ItemColors) fieldReference.get(Minecraft.getInstance());
         } catch (final NoSuchFieldException | IllegalAccessException e) {
-            throw new FieldLookupException(fieldName, e);
+            throw new FieldLookupException(this.itemColors.getValue(), e);
         }
     }
 }

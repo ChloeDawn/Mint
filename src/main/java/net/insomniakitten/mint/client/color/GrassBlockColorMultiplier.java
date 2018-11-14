@@ -44,7 +44,7 @@ public final class GrassBlockColorMultiplier implements IBlockColor {
     @Override
     public int getColor(final IBlockState state, @Nullable final IWorldReaderBase reader, @Nullable final BlockPos position, final int tintIndex) {
         if (reader != null && position != null) {
-            return BiomeColorHelper.getGrassColorAtPos(reader, position);
+            return BiomeColorHelper.getGrassColor(reader, position);
         }
 
         return ColorizerGrass.getGrassColor(this.temperature, this.humidity);
