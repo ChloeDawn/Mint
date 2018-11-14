@@ -29,6 +29,9 @@ public final class Mapping {
     }
 
     public static Mapping of(final String notch, final String srg, final String mcp) {
+        Preconditions.checkArgument(!notch.isEmpty(), "Value 'notch' cannot be empty");
+        Preconditions.checkArgument(!srg.isEmpty(), "Value 'srg' cannot be empty");
+        Preconditions.checkArgument(!mcp.isEmpty(), "Value 'mcp' cannot be empty");
         return new Mapping(notch, srg, mcp);
     }
 
@@ -70,17 +73,20 @@ public final class Mapping {
 
         private Builder() {}
 
-        public Builder notch(@Nullable final String notch) {
+        public Builder notch(final String notch) {
+            Preconditions.checkArgument(!notch.isEmpty(), "Value cannot be empty");
             this.notch = notch;
             return this;
         }
 
-        public Builder srg(@Nullable final String srg) {
+        public Builder srg(final String srg) {
+            Preconditions.checkArgument(!srg.isEmpty(), "Value cannot be empty");
             this.srg = srg;
             return this;
         }
 
-        public Builder mcp(@Nullable final String mcp) {
+        public Builder mcp(final String mcp) {
+            Preconditions.checkArgument(!mcp.isEmpty(), "Value cannot be empty");
             this.mcp = mcp;
             return this;
         }
