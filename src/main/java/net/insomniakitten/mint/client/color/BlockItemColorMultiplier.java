@@ -44,7 +44,7 @@ public final class BlockItemColorMultiplier implements IItemColor {
             return this.getBlockColor((ItemBlock) item, tintIndex);
         }
 
-        throw new IllegalStateException(item.getClass().getName() + " is not an ItemBlock");
+        throw new IllegalStateException("Not a block item: " + item.getClass().getName());
     }
 
     /**
