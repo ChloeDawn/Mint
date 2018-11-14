@@ -1,6 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
@@ -29,17 +28,17 @@ public class TranslucentStairsBlock extends SimpleStairsBlock {
     @Override
     @Deprecated
     public boolean isSideInvisible(final IBlockState state, final IBlockState other, final EnumFacing face) {
-        if (other.getBlock() != this) {
+        if (this != other.getBlock()) {
             return false;
         }
 
-        val facing = state.get(BlockStairs.FACING);
-        val otherFacing = other.get(BlockStairs.FACING);
+        final EnumFacing facing = state.get(BlockStairs.FACING);
+        final EnumFacing otherFacing = other.get(BlockStairs.FACING);
 
         if (face == EnumFacing.UP) {
-            val half = other.get(BlockStairs.HALF);
+            final Half half = other.get(BlockStairs.HALF);
 
-            return half != Half.TOP || otherFacing == facing;
+            return Half.TOP != half || otherFacing == facing;
         }
 
         if (otherFacing == facing.getOpposite()) {

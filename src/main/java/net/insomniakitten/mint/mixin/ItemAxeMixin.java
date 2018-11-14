@@ -1,7 +1,6 @@
 package net.insomniakitten.mint.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import lombok.val;
 import net.insomniakitten.mint.block.RotatedSlabBlock;
 import net.insomniakitten.mint.block.RotatedStairsBlock;
 import net.insomniakitten.mint.init.MintBlocks;
@@ -66,7 +65,7 @@ public final class ItemAxeMixin {
     @SuppressWarnings("SuspiciousMethodCalls")
     @Redirect(method = "onItemUse", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
     private Object getValueOrMintValueIfNull(final Map map, final Object key) {
-        @Nullable val value = map.get(key);
+        @Nullable final Object value = map.get(key);
 
         return value == null ? ItemAxeMixin.MINT_BLOCK_STRIPPING_MAP.get(key) : value;
     }
@@ -80,10 +79,9 @@ public final class ItemAxeMixin {
      */
     @Redirect(method = "onItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;I)Z"))
     private boolean cloneAndSetBlockState(final World world, final BlockPos position, final IBlockState state, final int flags) {
-        val original = world.getBlockState(position);
-        val block = original.getBlock();
+        final IBlockState original = world.getBlockState(position);
+        final Block block = original.getBlock();
 
-        // Re-patched: Now skipping "unsupported" blocks to avoid potential bugs
         if (block instanceof RotatedStairsBlock || block instanceof RotatedSlabBlock) {
             return world.setBlockState(position, BlockStates.copyTo(original, state), flags);
         }

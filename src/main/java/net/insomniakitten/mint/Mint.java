@@ -1,9 +1,10 @@
 package net.insomniakitten.mint;
 
-import lombok.extern.log4j.Log4j2;
 import net.insomniakitten.pylon.annotation.rift.Mod;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dimdev.riftloader.RiftLoader;
 
 import javax.annotation.Nullable;
@@ -14,13 +15,14 @@ import javax.annotation.Nullable;
  *
  * @author InsomniaKitten
  */
-@Log4j2(topic = Mint.ID + ".main")
 @Mod(id = Mint.ID, name = Mint.NAME, version = Mint.VERSION, authors = Mint.AUTHOR)
 public final class Mint {
     public static final String ID = "mint";
     public static final String NAME = "Mint";
     public static final String VERSION = "0.1.0";
     public static final String AUTHOR = "InsomniaKitten";
+
+    private static final Logger LOGGER = Mint.getLogger("main");
 
     @Nullable
     private static Boolean deobfRuntime;
@@ -40,6 +42,21 @@ public final class Mint {
         }
 
         return new ResourceLocation(Mint.ID, string);
+    }
+
+    /**
+     * Retrieves a namespaced {@link Logger} for the given topic
+     *
+     * @param topic The topic of the logger
+     * @return A logger instance from the factory
+     * @throws IllegalArgumentException If the topic is empty
+     */
+    public static Logger getLogger(final String topic) {
+        if (topic.isEmpty()) {
+            throw new IllegalArgumentException("Topic cannot be empty");
+        }
+
+        return LogManager.getLogger(Mint.ID + '.' + topic);
     }
 
     /**

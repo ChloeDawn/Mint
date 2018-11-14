@@ -1,6 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
 import net.insomniakitten.mint.util.GrassGrowth;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -56,11 +55,11 @@ public class GrassStairsBlock extends SimpleStairsBlock implements SpreadableBlo
     @Override
     @Nullable
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
-        @Nullable val state = super.getStateForPlacement(context);
+        @Nullable final IBlockState state = super.getStateForPlacement(context);
 
-        if (state != null && state.get(BlockStateProperties.HALF) == Half.TOP) {
-            val up = context.getPos().up();
-            val above = context.getWorld().getBlockState(up);
+        if (state != null && Half.TOP == state.get(BlockStateProperties.HALF)) {
+            final BlockPos up = context.getPos().up();
+            final IBlockState above = context.getWorld().getBlockState(up);
 
             return state.with(BlockStateProperties.SNOWY, this.isSnowBlock(above));
         }
@@ -101,8 +100,8 @@ public class GrassStairsBlock extends SimpleStairsBlock implements SpreadableBlo
     }
 
     private boolean isSnowBlock(final IBlockState state) {
-        val block = state.getBlock();
+        final Block block = state.getBlock();
 
-        return block == Blocks.SNOW_BLOCK || block == Blocks.SNOW;
+        return Blocks.SNOW_BLOCK == block || Blocks.SNOW == block;
     }
 }

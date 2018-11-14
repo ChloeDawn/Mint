@@ -2,18 +2,15 @@ buildscript {
   repositories {
     jcenter()
     maven { url = 'https://www.dimdev.org/maven' }
-    maven { url = 'https://plugins.gradle.org/m2' }
     maven { url = 'http://repo.spongepowered.org/maven' }
   }
   dependencies {
     classpath 'org.dimdev:ForgeGradle:2.3-SNAPSHOT'
-    classpath 'io.franzbecker:gradle-lombok:1.14'
     classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
   }
 }
 
 apply plugin: 'net.minecraftforge.gradle.tweaker-client'
-apply plugin: 'io.franzbecker.gradle-lombok'
 apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = 'Mint'
@@ -39,10 +36,6 @@ dependencies {
   implementation 'org.dimdev:rift:1.0.4-87:dev'
   implementation 'com.github.InsomniaKitten:Pylon:0.3.1'
   annotationProcessor 'com.github.InsomniaKitten:Pylon:0.3.1'
-}
-
-lombok {
-  version = '1.18.2'
 }
 
 mixin {

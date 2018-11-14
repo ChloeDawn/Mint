@@ -2,8 +2,6 @@ package net.insomniakitten.mint.init;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
 import net.insomniakitten.mint.Mint;
 import net.insomniakitten.mint.util.state.RegistrationState;
 import net.insomniakitten.pylon.annotation.rift.Listener;
@@ -13,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
+import org.apache.logging.log4j.Logger;
 import org.dimdev.rift.listener.ItemAdder;
 
 import javax.annotation.Nullable;
@@ -28,9 +27,10 @@ import java.util.concurrent.TimeUnit;
  * @author InsomniaKitten
  */
 @Listener(priority = 1)
-@Log4j2(topic = Mint.ID + ".items")
 public final class MintItems implements ItemAdder {
     private static final MintItems INSTANCE = new MintItems();
+
+    private static final Logger LOGGER = Mint.getLogger("items");
 
     static {
         Mint.setInstanceForLoader(MintItems.class, MintItems.INSTANCE);
@@ -58,8 +58,8 @@ public final class MintItems implements ItemAdder {
             throw new ConcurrentModificationException("Items still registering");
         }
 
-        val key = Mint.withNamespace(name);
-        @Nullable val item = Item.REGISTRY.get(key);
+        final ResourceLocation key = Mint.withNamespace(name);
+        @Nullable final Item item = Item.REGISTRY.get(key);
 
         return Objects.requireNonNull(item, "Item '" + key + "'");
     }
@@ -101,7 +101,7 @@ public final class MintItems implements ItemAdder {
 
         this.state = RegistrationState.REGISTERING;
 
-        val stopwatch = Stopwatch.createStarted();
+        final Stopwatch stopwatch = Stopwatch.createStarted();
 
         this.registerBlockItem("terracotta_stairs", ItemGroup.BUILDING_BLOCKS);
         this.registerBlockItem("white_terracotta_stairs", ItemGroup.BUILDING_BLOCKS);
@@ -282,8 +282,8 @@ public final class MintItems implements ItemAdder {
         this.registerBlockItem("sand_layer", ItemGroup.DECORATIONS);
         this.registerBlockItem("red_sand_layer", ItemGroup.DECORATIONS);
 
-        val stopwatchResult = stopwatch.stop();
-        val elapsed = stopwatchResult.elapsed(TimeUnit.MILLISECONDS);
+        final Stopwatch stopwatchResult = stopwatch.stop();
+        final long elapsed = stopwatchResult.elapsed(TimeUnit.MILLISECONDS);
 
         this.state = RegistrationState.REGISTERED;
 
@@ -303,7 +303,7 @@ public final class MintItems implements ItemAdder {
      * @param item The item to be registered
      */
     private void registerItem(final String name, final Item item) {
-        val key = Mint.withNamespace(name);
+        final ResourceLocation key = Mint.withNamespace(name);
         MintItems.LOGGER.debug("Registering item '{}'", key);
         Item.register(key, item);
     }
@@ -317,7 +317,7 @@ public final class MintItems implements ItemAdder {
      * @param group The group that the block item should be assigned to
      */
     private void registerBlockItem(final String name, final ItemGroup group) {
-        val key = Mint.withNamespace(name);
+        final ResourceLocation key = Mint.withNamespace(name);
         MintItems.LOGGER.debug("Registering block item '{}'", key);
         Item.register(MintBlocks.byName(name), group);
     }

@@ -1,6 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
 import net.insomniakitten.mint.util.GrassGrowth;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -91,11 +90,11 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
     @Override
     @Nullable
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
-        @Nullable val state = super.getStateForPlacement(context);
+        @Nullable final IBlockState state = super.getStateForPlacement(context);
 
         if (state != null && SlabType.BOTTOM != state.get(BlockStateProperties.SLAB_TYPE)) {
-            val up = context.getPos().up();
-            val above = context.getWorld().getBlockState(up);
+            final BlockPos up = context.getPos().up();
+            final IBlockState above = context.getWorld().getBlockState(up);
 
             return state.with(BlockStateProperties.SNOWY, this.isSnowBlock(above));
         }
@@ -113,14 +112,14 @@ public class GrassSlabBlock extends SimpleSlabBlock implements SpreadableBlock, 
     }
 
     private boolean isSnowBlock(final IBlockState state) {
-        val block = state.getBlock();
+        final Block block = state.getBlock();
 
-        return block == Blocks.SNOW_BLOCK || block == Blocks.SNOW;
+        return Blocks.SNOW_BLOCK == block || Blocks.SNOW == block;
     }
 
     private void setDefaultState() {
-        val stateContainer = this.getStateContainer();
-        val baseState = stateContainer.getBaseState();
+        final StateContainer<Block, IBlockState> stateContainer = this.getStateContainer();
+        final IBlockState baseState = stateContainer.getBaseState();
 
         this.setDefaultState(baseState.with(BlockStateProperties.SNOWY, false));
     }

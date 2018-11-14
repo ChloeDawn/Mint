@@ -1,6 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.BlockStairs;
@@ -27,8 +26,8 @@ public class RotatedStairsBlock extends BlockStairs {
     @Override
     @Deprecated
     public MapColor getMapColor(final IBlockState state, final IBlockReader reader, final BlockPos position) {
-        val axis = state.get(BlockRotatedPillar.AXIS);
-        val materialState = this.material.getDefaultState().with(BlockRotatedPillar.AXIS, axis);
+        final Axis axis = state.get(BlockRotatedPillar.AXIS);
+        final IBlockState materialState = this.material.getDefaultState().with(BlockRotatedPillar.AXIS, axis);
 
         return this.material.getMapColor(materialState, reader, position);
     }
@@ -36,13 +35,13 @@ public class RotatedStairsBlock extends BlockStairs {
     @Override
     @Nullable
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
-        @Nullable val state = super.getStateForPlacement(context);
+        @Nullable final IBlockState state = super.getStateForPlacement(context);
 
         if (state == null) {
             return null;
         }
 
-        val axis = context.getFace().getAxis();
+        final Axis axis = context.getFace().getAxis();
 
         return state.with(BlockStateProperties.AXIS, axis);
     }
@@ -50,8 +49,8 @@ public class RotatedStairsBlock extends BlockStairs {
     @Override
     @Deprecated
     public IBlockState rotate(final IBlockState state, final Rotation rotation) {
-        if (rotation == Rotation.COUNTERCLOCKWISE_90 || rotation == Rotation.CLOCKWISE_90) {
-            val axis = state.get(BlockRotatedPillar.AXIS);
+        if (Rotation.COUNTERCLOCKWISE_90 == rotation || Rotation.CLOCKWISE_90 == rotation) {
+            final Axis axis = state.get(BlockRotatedPillar.AXIS);
 
             if (axis.isHorizontal()) {
                 return state.with(BlockRotatedPillar.AXIS, axis == Axis.X ? Axis.Z : Axis.X);

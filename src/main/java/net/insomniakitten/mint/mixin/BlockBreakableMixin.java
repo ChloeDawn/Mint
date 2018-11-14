@@ -1,8 +1,8 @@
 package net.insomniakitten.mint.mixin;
 
-import lombok.val;
 import net.insomniakitten.mint.block.IceSlabBlock;
 import net.insomniakitten.mint.block.IceStairsBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -30,11 +30,11 @@ public final class BlockBreakableMixin {
      */
     @Inject(method = "isSideInvisible", at = @At("HEAD"), cancellable = true)
     private void returnTrueIfIceIsAgainstIce(final IBlockState state, final IBlockState other, final EnumFacing face, final CallbackInfoReturnable<Boolean> cir) {
-        if (state.getBlock() != Blocks.ICE) {
+        if (Blocks.ICE != state.getBlock()) {
             return;
         }
 
-        val block = other.getBlock();
+        final Block block = other.getBlock();
 
         if (block instanceof IceSlabBlock) {
             if (face.getAxis().isVertical()) {

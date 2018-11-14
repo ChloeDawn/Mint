@@ -1,6 +1,6 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
@@ -25,7 +25,7 @@ public interface MeltableBlock {
 
         state.dropBlockAsItem(world, position, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
 
-        val material = world.getBlockState(position.down()).getMaterial();
+        final Material material = world.getBlockState(position.down()).getMaterial();
 
         if (material.blocksMovement() || material.isLiquid()) {
             world.setBlockState(position, Blocks.WATER.getDefaultState());

@@ -1,10 +1,11 @@
 package net.insomniakitten.mint.client.color;
 
-import lombok.val;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -38,7 +39,7 @@ public final class BlockItemColorMultiplier implements IItemColor {
      */
     @Override
     public int getColor(final ItemStack stack, final int tintIndex) {
-        val item = stack.getItem();
+        final Item item = stack.getItem();
 
         if (item instanceof ItemBlock) {
             return this.getBlockColor((ItemBlock) item, tintIndex);
@@ -55,8 +56,8 @@ public final class BlockItemColorMultiplier implements IItemColor {
      * @return The color multiplier of the given item's parent {@link Block}
      */
     private int getBlockColor(final ItemBlock item, final int tintIndex) {
-        val block = item.getBlock();
-        val state = block.getDefaultState();
+        final Block block = item.getBlock();
+        final IBlockState state = block.getDefaultState();
 
         return this.blockColors.getColor(state, null, null, tintIndex);
     }

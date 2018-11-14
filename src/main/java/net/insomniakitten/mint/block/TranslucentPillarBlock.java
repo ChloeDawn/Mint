@@ -16,7 +16,7 @@ public class TranslucentPillarBlock extends SimplePillarBlock {
     @Override
     @Deprecated
     public boolean isSideInvisible(final IBlockState state, final IBlockState other, final EnumFacing face) {
-        return other.getBlock() == this;
+        return this == other.getBlock();
     }
 
     @Override

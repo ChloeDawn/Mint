@@ -1,6 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.MapColor;
@@ -26,8 +25,8 @@ public class RotatedSlabBlock extends BlockSlab {
     @Override
     @Deprecated
     public MapColor getMapColor(final IBlockState state, final IBlockReader reader, final BlockPos position) {
-        val axis = state.get(BlockStateProperties.AXIS);
-        val materialState = this.material.getDefaultState().with(BlockStateProperties.AXIS, axis);
+        final Axis axis = state.get(BlockStateProperties.AXIS);
+        final IBlockState materialState = this.material.getDefaultState().with(BlockStateProperties.AXIS, axis);
 
         return this.material.getMapColor(materialState, reader, position);
     }
@@ -35,8 +34,8 @@ public class RotatedSlabBlock extends BlockSlab {
     @Override
     @Deprecated
     public IBlockState rotate(final IBlockState state, final Rotation rotation) {
-        if (rotation == Rotation.COUNTERCLOCKWISE_90 || rotation == Rotation.CLOCKWISE_90) {
-            val axis = state.get(BlockStateProperties.AXIS);
+        if (Rotation.COUNTERCLOCKWISE_90 == rotation || Rotation.CLOCKWISE_90 == rotation) {
+            final Axis axis = state.get(BlockStateProperties.AXIS);
 
             if (axis.isHorizontal()) {
                 return state.with(BlockStateProperties.AXIS, axis == Axis.X ? Axis.Z : Axis.X);
@@ -55,21 +54,21 @@ public class RotatedSlabBlock extends BlockSlab {
     @Override
     @Nullable
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
-        @Nullable val state = super.getStateForPlacement(context);
+        @Nullable final IBlockState state = super.getStateForPlacement(context);
 
         if (state == null) {
             return null;
         }
 
-        val other = context.getWorld().getBlockState(context.getPos());
+        final IBlockState other = context.getWorld().getBlockState(context.getPos());
 
-        if (other.getBlock() == this) {
-            val axis = other.get(BlockStateProperties.AXIS);
+        if (this == other.getBlock()) {
+            final Axis axis = other.get(BlockStateProperties.AXIS);
 
             return state.with(BlockStateProperties.AXIS, axis);
         }
 
-        val axis = context.getFace().getAxis();
+        final Axis axis = context.getFace().getAxis();
 
         return state.with(BlockStateProperties.AXIS, axis);
     }

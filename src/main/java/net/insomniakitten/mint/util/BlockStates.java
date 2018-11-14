@@ -1,10 +1,11 @@
 package net.insomniakitten.mint.util;
 
-import lombok.val;
-import lombok.var;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.IStateHolder;
+
+import java.util.Collection;
+import java.util.Map.Entry;
 
 /**
  * Utility class for functions relating
@@ -26,12 +27,12 @@ public final class BlockStates {
      */
     @SuppressWarnings("RedundantCast")
     public static IBlockState copyTo(final IStateHolder<IBlockState> source, final IBlockState target) {
-        val properties = target.getProperties();
-        var copy = target;
+        final Collection<IProperty<?>> properties = target.getProperties();
+        IBlockState copy = target;
 
-        for (val entry : source.getValues().entrySet()) {
-            val property = (IProperty) entry.getKey();
-            val value = (Comparable) entry.getValue();
+        for (final Entry<IProperty<?>, Comparable<?>> entry : source.getValues().entrySet()) {
+            final IProperty property = entry.getKey();
+            final Comparable value = entry.getValue();
 
             if (properties.contains(property)) {
                 copy = copy.with(property, value);

@@ -1,17 +1,17 @@
 package net.insomniakitten.mint.mixin;
 
 import com.google.common.base.MoreObjects;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
 import net.insomniakitten.mint.Mint;
 import net.insomniakitten.mint.util.state.InitializationState;
 import net.insomniakitten.pylon.annotation.rift.Listener;
+import org.apache.logging.log4j.Logger;
 import org.dimdev.riftloader.RiftLoader;
 import org.dimdev.riftloader.listener.InitializationListener;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfig;
+import org.spongepowered.asm.mixin.transformer.Config;
 
 import javax.annotation.Nullable;
 import java.util.ConcurrentModificationException;
@@ -30,9 +30,10 @@ import java.util.ConcurrentModificationException;
  * @see MintMixins#CONFIGURATION_FILE
  */
 @Listener(priority = Integer.MIN_VALUE + 1)
-@Log4j2(topic = Mint.ID + ".mixins")
 public final class MintMixins implements InitializationListener {
     private static final MintMixins INSTANCE = new MintMixins();
+
+    private static final Logger LOGGER = Mint.getLogger("mixins");
 
     private static final String CONFIGURATION_FILE = "mixins.mint.json";
 
@@ -42,11 +43,8 @@ public final class MintMixins implements InitializationListener {
 
     private volatile InitializationState state = InitializationState.initial();
 
-    @Nullable
-    private IMixinConfig configuration;
-
-    @Nullable
-    private MixinEnvironment environment;
+    @Nullable private IMixinConfig configuration;
+    @Nullable private MixinEnvironment environment;
 
     private MintMixins() {}
 
@@ -114,7 +112,7 @@ public final class MintMixins implements InitializationListener {
 
         MintMixins.LOGGER.info("Caching references");
 
-        for (val config : Mixins.getConfigs()) {
+        for (final Config config : Mixins.getConfigs()) {
             if (MintMixins.CONFIGURATION_FILE.equals(config.getName())) {
                 this.configuration = config.getConfig();
                 this.environment = config.getEnvironment();
@@ -146,7 +144,7 @@ public final class MintMixins implements InitializationListener {
         MintMixins.LOGGER.debug("Priority: {}", this.configuration.getPriority());
         MintMixins.LOGGER.debug("Targets:");
 
-        for (val target : this.configuration.getTargets()) {
+        for (final String target : this.configuration.getTargets()) {
             MintMixins.LOGGER.debug(" - {}", target);
         }
     }

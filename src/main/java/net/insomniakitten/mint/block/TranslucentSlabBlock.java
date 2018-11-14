@@ -1,6 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -24,18 +23,18 @@ public class TranslucentSlabBlock extends SimpleSlabBlock {
     @Override
     @Deprecated
     public boolean isSideInvisible(final IBlockState state, final IBlockState other, final EnumFacing face) {
-        if (other.getBlock() != this) {
+        if (this != other.getBlock()) {
             return false;
         }
 
-        val type = other.get(BlockStateProperties.SLAB_TYPE);
+        final SlabType type = other.get(BlockStateProperties.SLAB_TYPE);
 
         if (SlabType.DOUBLE == type) {
             return true;
         }
 
         if (face.getAxis().isVertical()) {
-            return face == (type == SlabType.TOP ? EnumFacing.DOWN : EnumFacing.UP);
+            return face == (SlabType.TOP == type ? EnumFacing.DOWN : EnumFacing.UP);
         }
 
         return state.get(BlockStateProperties.SLAB_TYPE) == type;

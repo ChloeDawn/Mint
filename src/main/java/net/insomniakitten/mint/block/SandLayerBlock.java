@@ -1,7 +1,5 @@
 package net.insomniakitten.mint.block;
 
-import lombok.val;
-import lombok.var;
 import net.minecraft.block.Block;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
@@ -62,7 +60,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
 
     @Override
     public boolean canContainFluid(final IBlockReader reader, final BlockPos position, final IBlockState state, final Fluid fluid) {
-        return fluid == Fluids.WATER && !state.get(BlockStateProperties.WATERLOGGED);
+        return Fluids.WATER == fluid && !state.get(BlockStateProperties.WATERLOGGED);
     }
 
     @Override
@@ -96,7 +94,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public boolean isFullCube(final IBlockState state) {
-        return state.get(BlockStateProperties.LAYERS_1_8) == 8;
+        return 8 == state.get(BlockStateProperties.LAYERS_1_8);
     }
 
     @Override
@@ -108,14 +106,14 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public boolean isReplaceable(final IBlockState state, final BlockItemUseContext context) {
-        val layers = state.get(BlockStateProperties.LAYERS_1_8);
+        final int layers = state.get(BlockStateProperties.LAYERS_1_8);
 
-        if (context.getItem().getItem() != this.asItem() || 8 <= layers) {
+        if (this.asItem() != context.getItem().getItem() || 8 <= layers) {
             return 1 == layers;
         }
 
         if (context.func_196012_c()) {
-            return context.getFace() == EnumFacing.UP;
+            return EnumFacing.UP == context.getFace();
         }
 
         return true;
@@ -124,7 +122,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public BlockFaceShape getBlockFaceShape(final IBlockReader reader, final IBlockState state, final BlockPos position, final EnumFacing face) {
-        return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+        return EnumFacing.DOWN == face ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -147,15 +145,15 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Deprecated
     public boolean isValidPosition(final IBlockState state, final IWorldReaderBase reader, final BlockPos position) {
-        val down = position.down();
-        val below = reader.getBlockState(down);
-        val shape = below.getBlockFaceShape(reader, down, EnumFacing.UP);
+        final BlockPos down = position.down();
+        final IBlockState below = reader.getBlockState(down);
+        final BlockFaceShape shape = below.getBlockFaceShape(reader, down, EnumFacing.UP);
 
-        if (shape == BlockFaceShape.SOLID) {
+        if (BlockFaceShape.SOLID == shape) {
             return true;
         }
 
-        if (below.getBlock() == this) {
+        if (this == below.getBlock()) {
             return below.get(BlockStateProperties.LAYERS_1_8) == 8;
         }
 
@@ -165,19 +163,19 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     @Override
     @Nullable
     public IBlockState getStateForPlacement(final BlockItemUseContext context) {
-        val world = context.getWorld();
-        val pos = context.getPos();
-        val state = world.getBlockState(pos);
+        final World world = context.getWorld();
+        final BlockPos pos = context.getPos();
+        final IBlockState state = world.getBlockState(pos);
 
-        if (state.getBlock() == this) {
-            val oldLayers = state.get(BlockStateProperties.LAYERS_1_8);
-            val newLayers = Math.min(8, oldLayers + 1);
+        if (this == state.getBlock()) {
+            final int oldLayers = state.get(BlockStateProperties.LAYERS_1_8);
+            final int newLayers = Math.min(8, oldLayers + 1);
 
             return state.with(BlockStateProperties.LAYERS_1_8, newLayers);
         }
 
-        val fluidState = world.getFluidState(pos);
-        val waterlogged = Fluids.WATER == fluidState.getFluid();
+        final IFluidState fluidState = world.getFluidState(pos);
+        final boolean waterlogged = Fluids.WATER == fluidState.getFluid();
 
         return this.getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged);
     }
@@ -187,14 +185,14 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
         player.addStat(StatList.BLOCK_MINED.get(this));
         player.addExhaustion(0.005F);
 
-        val layers = state.get(BlockStateProperties.LAYERS_1_8);
+        final int layers = state.get(BlockStateProperties.LAYERS_1_8);
 
         if (8 == layers) {
             Block.spawnAsEntity(world, position, new ItemStack(Blocks.SAND));
             return;
         }
 
-        for (var layer = 0; layer < layers; ++layer) {
+        for (int layer = 0; layer < layers; ++layer) {
             Block.spawnAsEntity(world, position, this.getSilkTouchDrop(state));
         }
     }
@@ -221,7 +219,7 @@ public class SandLayerBlock extends Block implements IBucketPickupHandler, ILiqu
     }
 
     private void setDefaultState() {
-        var state = this.getStateContainer().getBaseState();
+        IBlockState state = this.getStateContainer().getBaseState();
 
         state = state.with(BlockStateProperties.LAYERS_1_8, 1);
         state = state.with(BlockStateProperties.WATERLOGGED, false);

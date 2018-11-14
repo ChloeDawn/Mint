@@ -2,8 +2,6 @@ package net.insomniakitten.mint.init;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
 import net.insomniakitten.mint.Mint;
 import net.insomniakitten.mint.block.GrassSlabBlock;
 import net.insomniakitten.mint.block.GrassStairsBlock;
@@ -24,8 +22,10 @@ import net.minecraft.block.BlockIce;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
+import org.apache.logging.log4j.Logger;
 import org.dimdev.rift.listener.BlockAdder;
 
+import javax.annotation.Nullable;
 import java.util.ConcurrentModificationException;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -38,9 +38,10 @@ import java.util.concurrent.TimeUnit;
  * @author InsomniaKitten
  */
 @Listener(priority = 1)
-@Log4j2(topic = Mint.ID + ".blocks")
 public final class MintBlocks implements BlockAdder {
     private static final MintBlocks INSTANCE = new MintBlocks();
+
+    private static final Logger LOGGER = Mint.getLogger("blocks");
 
     static {
         Mint.setInstanceForLoader(MintBlocks.class, MintBlocks.INSTANCE);
@@ -68,8 +69,8 @@ public final class MintBlocks implements BlockAdder {
             throw new ConcurrentModificationException("Blocks still registering");
         }
 
-        val key = Mint.withNamespace(name);
-        val block = Block.REGISTRY.get(key);
+        final ResourceLocation key = Mint.withNamespace(name);
+        @Nullable final Block block = Block.REGISTRY.get(key);
 
         return Objects.requireNonNull(block, "Block '" + key + "'");
     }
@@ -111,7 +112,7 @@ public final class MintBlocks implements BlockAdder {
 
         MintBlocks.LOGGER.info("Beginning block registration");
 
-        val stopwatch = Stopwatch.createStarted();
+        final Stopwatch stopwatch = Stopwatch.createStarted();
 
         this.registerBlock("terracotta_stairs", new SimpleStairsBlock(Blocks.TERRACOTTA));
         this.registerBlock("white_terracotta_stairs", new SimpleStairsBlock(Blocks.WHITE_TERRACOTTA));
@@ -277,7 +278,7 @@ public final class MintBlocks implements BlockAdder {
         this.registerBlock("ice_stairs", new IceStairsBlock(Blocks.ICE));
         this.registerBlock("ice_slab", new IceSlabBlock(Blocks.ICE));
 
-        val iceBricks = new BlockIce(Block.Builder.from(Blocks.ICE));
+        final Block iceBricks = new BlockIce(Block.Builder.from(Blocks.ICE));
 
         this.registerBlock("ice_bricks", iceBricks);
         this.registerBlock("ice_brick_stairs", new IceStairsBlock(iceBricks));
@@ -295,8 +296,8 @@ public final class MintBlocks implements BlockAdder {
         this.registerBlock("sand_layer", new SandLayerBlock(Blocks.SAND));
         this.registerBlock("red_sand_layer", new SandLayerBlock(Blocks.RED_SAND));
 
-        val stopwatchResult = stopwatch.stop();
-        val elapsed = stopwatchResult.elapsed(TimeUnit.MILLISECONDS);
+        final Stopwatch stopwatchResult = stopwatch.stop();
+        final long elapsed = stopwatchResult.elapsed(TimeUnit.MILLISECONDS);
 
         MintBlocks.LOGGER.info("Block registration completed in {}ms", elapsed);
 
@@ -316,7 +317,7 @@ public final class MintBlocks implements BlockAdder {
      * @param block The block to be registered
      */
     private void registerBlock(final String name, final Block block) {
-        val key = Mint.withNamespace(name);
+        final ResourceLocation key = Mint.withNamespace(name);
 
         MintBlocks.LOGGER.debug("Registering block '{}'", key);
         Block.register(key, block);

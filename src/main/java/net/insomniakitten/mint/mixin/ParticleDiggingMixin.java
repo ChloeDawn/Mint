@@ -1,8 +1,8 @@
 package net.insomniakitten.mint.mixin;
 
-import lombok.val;
 import net.insomniakitten.mint.block.GrassSlabBlock;
 import net.insomniakitten.mint.block.GrassStairsBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleDigging;
 import org.spongepowered.asm.mixin.Final;
@@ -36,7 +36,7 @@ public final class ParticleDiggingMixin {
      */
     @Inject(method = "multiplyColor", at = @At("HEAD"), cancellable = true)
     private void returnIfSourceIsGrassSlabOrStairs(final CallbackInfo ci) {
-        val block = this.sourceState.getBlock();
+        final Block block = this.sourceState.getBlock();
 
         if (block instanceof GrassSlabBlock || block instanceof GrassStairsBlock) {
             ci.cancel();

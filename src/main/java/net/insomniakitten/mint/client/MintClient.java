@@ -1,8 +1,6 @@
 package net.insomniakitten.mint.client;
 
 import com.google.common.base.MoreObjects;
-import lombok.extern.log4j.Log4j2;
-import lombok.val;
 import net.insomniakitten.mint.Mint;
 import net.insomniakitten.mint.client.color.BlockItemColorMultiplier;
 import net.insomniakitten.mint.client.color.GrassBlockColorMultiplier;
@@ -23,10 +21,12 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import org.apache.logging.log4j.Logger;
 import org.dimdev.rift.listener.client.TileEntityRendererAdder;
 import org.dimdev.rift.mixin.hook.client.MixinTileEntityRendererDispatcher;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
 
@@ -40,9 +40,10 @@ import java.util.Map;
  * @author InsomniaKitten
  */
 @Listener(priority = 1, side = Side.CLIENT)
-@Log4j2(topic = Mint.ID + ".client")
 public final class MintClient implements TileEntityRendererAdder {
     private static final MintClient INSTANCE = new MintClient();
+
+    private static final Logger LOGGER = Mint.getLogger("client");
 
     static {
         Mint.setInstanceForLoader(MintClient.class, MintClient.INSTANCE);
@@ -88,8 +89,8 @@ public final class MintClient implements TileEntityRendererAdder {
 
         this.state = RegistrationState.REGISTERING;
 
-        @Nullable val blockColors = Minecraft.getInstance().getBlockColors();
-        @Nullable val itemColors = this.getItemColorsInstanceReflectively();
+        @Nullable final BlockColors blockColors = Minecraft.getInstance().getBlockColors();
+        @Nullable final ItemColors itemColors = this.getItemColorsInstanceReflectively();
 
         if (blockColors == null) {
             throw new IllegalStateException("BlockColors not initialized");
@@ -101,14 +102,14 @@ public final class MintClient implements TileEntityRendererAdder {
 
         MintClient.LOGGER.info("Registering block color multipliers");
 
-        val grassColor = new GrassBlockColorMultiplier(0.5, 1.0);
+        final IBlockColor grassColor = new GrassBlockColorMultiplier(0.5, 1.0);
 
         this.registerColorMultiplier(blockColors, grassColor, MintBlocks.byName("grass_block_stairs"));
         this.registerColorMultiplier(blockColors, grassColor, MintBlocks.byName("grass_block_slab"));
 
         MintClient.LOGGER.info("Registering item color multipliers");
 
-        val blockColor = new BlockItemColorMultiplier(blockColors);
+        final IItemColor blockColor = new BlockItemColorMultiplier(blockColors);
 
         this.registerColorMultiplier(itemColors, blockColor, MintItems.byName("grass_block_stairs"));
         this.registerColorMultiplier(itemColors, blockColor, MintItems.byName("grass_block_slab"));
@@ -149,13 +150,13 @@ public final class MintClient implements TileEntityRendererAdder {
      */
     @Nullable
     private ItemColors getItemColorsInstanceReflectively() {
-        val fieldName = this.itemColors.getValue();
+        final String fieldName = this.itemColors.getValue();
         try {
-            val fieldReference = Minecraft.class.getDeclaredField(fieldName);
+            final Field field = Minecraft.class.getDeclaredField(fieldName);
 
-            fieldReference.setAccessible(true);
+            field.setAccessible(true);
 
-            return (ItemColors) fieldReference.get(Minecraft.getInstance());
+            return (ItemColors) field.get(Minecraft.getInstance());
         } catch (final NoSuchFieldException | IllegalAccessException e) {
             throw new FieldLookupException(fieldName, e);
         }

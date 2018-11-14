@@ -2,7 +2,6 @@ package net.insomniakitten.mint.util;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
-import lombok.val;
 import net.insomniakitten.mint.init.MintBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -37,10 +36,10 @@ public final class GrassGrowth {
      */
     @Nullable
     public static IBlockState getGrassEquivalent(final IBlockState state) {
-        @Nullable val block = GrassGrowth.CONVERSION_MAP.get(state.getBlock());
+        @Nullable final Block block = GrassGrowth.CONVERSION_MAP.get(state.getBlock());
 
         if (block != null) {
-            val target = block.getDefaultState();
+            final IBlockState target = block.getDefaultState();
             return BlockStates.copyTo(state, target);
         }
 
@@ -56,10 +55,10 @@ public final class GrassGrowth {
      */
     @Nullable
     public static IBlockState getDirtEquivalent(final IBlockState state) {
-        @Nullable val block = GrassGrowth.CONVERSION_MAP.inverse().get(state.getBlock());
+        @Nullable final Block block = GrassGrowth.CONVERSION_MAP.inverse().get(state.getBlock());
 
         if (block != null) {
-            val target = block.getDefaultState();
+            final IBlockState target = block.getDefaultState();
             return BlockStates.copyTo(state, target);
         }
 
