@@ -32,6 +32,7 @@ public final class Mapping {
         Preconditions.checkArgument(!notch.isEmpty(), "Value 'notch' cannot be empty");
         Preconditions.checkArgument(!srg.isEmpty(), "Value 'srg' cannot be empty");
         Preconditions.checkArgument(!mcp.isEmpty(), "Value 'mcp' cannot be empty");
+
         return new Mapping(notch, srg, mcp);
     }
 
@@ -60,9 +61,13 @@ public final class Mapping {
 
     private String getMappingForEnvironment(final String notch, final String srg, final String mcp) {
         final Obfuscation obf = Obfuscation.environment();
-        if (obf.isNotch()) return notch;
-        if (obf.isSrg()) return srg;
-        if (obf.isMcp()) return mcp;
+
+        switch (obf) {
+            case NOTCH: return notch;
+            case SRG: return srg;
+            case MCP: return mcp;
+        }
+
         throw new IllegalStateException(obf.toString());
     }
 
@@ -76,18 +81,21 @@ public final class Mapping {
         public Builder notch(final String notch) {
             Preconditions.checkArgument(!notch.isEmpty(), "Value cannot be empty");
             this.notch = notch;
+
             return this;
         }
 
         public Builder srg(final String srg) {
             Preconditions.checkArgument(!srg.isEmpty(), "Value cannot be empty");
             this.srg = srg;
+
             return this;
         }
 
         public Builder mcp(final String mcp) {
             Preconditions.checkArgument(!mcp.isEmpty(), "Value cannot be empty");
             this.mcp = mcp;
+
             return this;
         }
 
@@ -95,6 +103,7 @@ public final class Mapping {
             final String notch = Preconditions.checkNotNull(this.notch);
             final String srg = MoreObjects.firstNonNull(this.srg, notch);
             final String mcp = MoreObjects.firstNonNull(this.mcp, srg);
+
             return new Mapping(notch, srg, mcp);
         }
     }
