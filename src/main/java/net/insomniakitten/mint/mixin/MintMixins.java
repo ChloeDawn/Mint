@@ -44,8 +44,8 @@ public final class MintMixins implements InitializationListener {
 
     private volatile InitializationState state = InitializationState.initial();
 
-    @Nullable private IMixinConfig configuration;
-    @Nullable private MixinEnvironment environment;
+    @Nullable private IMixinConfig cfg;
+    @Nullable private MixinEnvironment env;
 
     private MintMixins() {}
 
@@ -76,8 +76,8 @@ public final class MintMixins implements InitializationListener {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-            .add("configuration", this.configuration)
-            .add("environment", this.environment)
+            .add("configuration", this.cfg)
+            .add("environment", this.env)
             .add("state", this.state)
             .toString();
     }
@@ -99,24 +99,21 @@ public final class MintMixins implements InitializationListener {
 
     /**
      * Looks up the configuration instance from the Mixin configuration
-     * collection, and caches it to {@link MintMixins#configuration}
+     * collection, and caches it to {@link MintMixins#cfg}
      * along with a reference to its {@link MixinEnvironment} context
      *
      * @see Mixins#getConfigs()
      */
     private void cacheReferences() {
-        if (this.configuration != null && this.environment != null) {
-            throw new IllegalStateException("References already cached");
-        }
-
-        this.verifyReferenceCache();
+        Preconditions.checkState(this.cfg == null && this.env == null, "References already cached");
 
         MintMixins.LOGGER.info("Caching references");
 
         for (final Config config : Mixins.getConfigs()) {
             if (MintMixins.CONFIGURATION_FILE.equals(config.getName())) {
-                this.configuration = config.getConfig();
-                this.environment = config.getEnvironment();
+                this.cfg = config.getConfig();
+                this.env = config.getEnvironment();
+
                 return;
             }
         }
@@ -129,30 +126,17 @@ public final class MintMixins implements InitializationListener {
      * to the debug output of {@link MintMixins#LOGGER}
      */
     private void printDiagnostics() {
-        this.verifyReferenceCache();
+        Preconditions.checkState(this.cfg != null || this.env != null, "References not cached");
+        Preconditions.checkState((this.cfg == null) == (this.env == null), "Reference cache imbalance");
 
-        // Sanity checking... If these are still null, the universe probably imploded
-        assert this.environment != null : "this.environment != null";
-        assert this.configuration != null : "this.configuration != null";
-
-        MintMixins.LOGGER.debug("Environment version: {}", this.environment.getVersion());
-        MintMixins.LOGGER.debug("Environment side: {}", this.environment.getSide());
-        MintMixins.LOGGER.debug("Package: {}", this.configuration.getMixinPackage());
-        MintMixins.LOGGER.debug("Priority: {}", this.configuration.getPriority());
+        MintMixins.LOGGER.debug("Environment version: {}", this.env.getVersion());
+        MintMixins.LOGGER.debug("Environment side: {}", this.env.getSide());
+        MintMixins.LOGGER.debug("Package: {}", this.cfg.getMixinPackage());
+        MintMixins.LOGGER.debug("Priority: {}", this.cfg.getPriority());
         MintMixins.LOGGER.debug("Targets:");
 
-        for (final String target : this.configuration.getTargets()) {
+        for (final String target : this.cfg.getTargets()) {
             MintMixins.LOGGER.debug(" - {}", target);
         }
-    }
-
-    /**
-     * Verifies that the reference cache is not in an illegal state
-     * If there is an imbalance in nullability of the cache fields,
-     * an {@link IllegalStateException} will be thrown
-     */
-    private void verifyReferenceCache() {
-        Preconditions.checkState(this.configuration != null || this.environment != null, "References not cached");
-        Preconditions.checkState((this.configuration == null) == (this.environment == null), "Reference cache imbalance");
     }
 }
