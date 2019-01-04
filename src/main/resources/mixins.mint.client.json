@@ -6,7 +6,6 @@
   "package": "net.insomniakitten.mint.client.mixin",
   "refmap": "mixins.mint.refmap.json",
   "client": [
-    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

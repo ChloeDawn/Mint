@@ -3,32 +3,27 @@ package net.insomniakitten.mint.client.color;
 import com.google.common.base.Preconditions;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.block.BlockColorMap;
 import net.minecraft.client.render.block.BlockColorMapper;
 import net.minecraft.client.render.item.ItemColorMapper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.block.BlockItem;
+import net.minecraft.util.Lazy;
+
+import javax.annotation.Nullable;
 
 /**
  * An {@link ItemColorMapper} implementation that delegates to the {@link Block}
- * parent of an {@link BlockItem}, and invokes its {@link BlockColorMapper} from
- * within the given {@link BlockColorMap} instance
+ * parent of an {@link BlockItem}, and invokes its {@link BlockColorMapper}
  *
  * @author InsomniaKitten
  */
 public final class BlockItemColorMultiplier implements ItemColorMapper {
-  private final BlockColorMap blockColorMap;
-
-  /**
-   * Constructs a new {@link BlockItemColorMultiplier} with the
-   * given {@link BlockColorMap} instance to delegate lookups to
-   *
-   * @param blockColorMap The block colors instance to delegate to
-   */
-  public BlockItemColorMultiplier(final BlockColorMap blockColorMap) {
-    this.blockColorMap = blockColorMap;
-  }
+  private static final Lazy<BlockColorMap> BLOCK_COLOR_MAP = new Lazy<>(() ->
+    MinecraftClient.getInstance().getBlockColorMap()
+  );
 
   /**
    * Determines the color multiplier of the given {@link ItemStack} for the given tint index
@@ -59,6 +54,20 @@ public final class BlockItemColorMultiplier implements ItemColorMapper {
     final Block block = item.getBlock();
     final BlockState state = block.getDefaultState();
 
-    return this.blockColorMap.getRenderColor(state, null, null, tintIndex);
+    return this.getBlockColorMap().getRenderColor(state, null, null, tintIndex);
+  }
+
+  /**
+   * Retrieves the client's {@link BlockColorMap} lazily, utilizing
+   * a {@link Lazy} supplying {@link MinecraftClient#getBlockColorMap()}
+   *
+   * @return The client's {@link BlockColorMap}
+   */
+  private BlockColorMap getBlockColorMap() {
+    @Nullable final BlockColorMap map = BlockItemColorMultiplier.BLOCK_COLOR_MAP.get();
+
+    Preconditions.checkState(map != null, "BlockColorMap not initialized");
+
+    return map;
   }
 }
