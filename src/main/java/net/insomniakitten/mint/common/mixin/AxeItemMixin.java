@@ -8,6 +8,7 @@ import net.insomniakitten.mint.common.util.BlockStates;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.AxeItem;
+import net.minecraft.util.Lazy;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,32 +25,34 @@ import java.util.Map;
  */
 @Mixin(AxeItem.class)
 final class AxeItemMixin {
-  private static final Map<Block, Block> MINT_BLOCK_STRIPPING_MAP = ImmutableMap.<Block, Block>builder()
-    .put(MintBootstrap.getBlock("oak_log_stairs"),       MintBootstrap.getBlock("stripped_oak_log_stairs"))
-    .put(MintBootstrap.getBlock("spruce_log_stairs"),    MintBootstrap.getBlock("stripped_spruce_log_stairs"))
-    .put(MintBootstrap.getBlock("birch_log_stairs"),     MintBootstrap.getBlock("stripped_birch_log_stairs"))
-    .put(MintBootstrap.getBlock("jungle_log_stairs"),    MintBootstrap.getBlock("stripped_jungle_log_stairs"))
-    .put(MintBootstrap.getBlock("acacia_log_stairs"),    MintBootstrap.getBlock("stripped_acacia_log_stairs"))
-    .put(MintBootstrap.getBlock("dark_oak_log_stairs"),  MintBootstrap.getBlock("stripped_dark_oak_log_stairs"))
-    .put(MintBootstrap.getBlock("oak_wood_stairs"),      MintBootstrap.getBlock("stripped_oak_wood_stairs"))
-    .put(MintBootstrap.getBlock("spruce_wood_stairs"),   MintBootstrap.getBlock("stripped_spruce_wood_stairs"))
-    .put(MintBootstrap.getBlock("birch_wood_stairs"),    MintBootstrap.getBlock("stripped_birch_wood_stairs"))
-    .put(MintBootstrap.getBlock("jungle_wood_stairs"),   MintBootstrap.getBlock("stripped_jungle_wood_stairs"))
-    .put(MintBootstrap.getBlock("acacia_wood_stairs"),   MintBootstrap.getBlock("stripped_acacia_wood_stairs"))
-    .put(MintBootstrap.getBlock("dark_oak_wood_stairs"), MintBootstrap.getBlock("stripped_dark_oak_wood_stairs"))
-    .put(MintBootstrap.getBlock("oak_log_slab"),         MintBootstrap.getBlock("stripped_oak_log_slab"))
-    .put(MintBootstrap.getBlock("spruce_log_slab"),      MintBootstrap.getBlock("stripped_spruce_log_slab"))
-    .put(MintBootstrap.getBlock("birch_log_slab"),       MintBootstrap.getBlock("stripped_birch_log_slab"))
-    .put(MintBootstrap.getBlock("jungle_log_slab"),      MintBootstrap.getBlock("stripped_jungle_log_slab"))
-    .put(MintBootstrap.getBlock("acacia_log_slab"),      MintBootstrap.getBlock("stripped_acacia_log_slab"))
-    .put(MintBootstrap.getBlock("dark_oak_log_slab"),    MintBootstrap.getBlock("stripped_dark_oak_log_slab"))
-    .put(MintBootstrap.getBlock("oak_wood_slab"),        MintBootstrap.getBlock("stripped_oak_wood_slab"))
-    .put(MintBootstrap.getBlock("spruce_wood_slab"),     MintBootstrap.getBlock("stripped_spruce_wood_slab"))
-    .put(MintBootstrap.getBlock("birch_wood_slab"),      MintBootstrap.getBlock("stripped_birch_wood_slab"))
-    .put(MintBootstrap.getBlock("jungle_wood_slab"),     MintBootstrap.getBlock("stripped_jungle_wood_slab"))
-    .put(MintBootstrap.getBlock("acacia_wood_slab"),     MintBootstrap.getBlock("stripped_acacia_wood_slab"))
-    .put(MintBootstrap.getBlock("dark_oak_wood_slab"),   MintBootstrap.getBlock("stripped_dark_oak_wood_slab"))
-    .build();
+  private static final Lazy<Map<Block, Block>> MINT_BLOCK_STRIPPING_MAP = new Lazy<>(() ->
+    ImmutableMap.<Block, Block>builder()
+      .put(MintBootstrap.getBlock("oak_log_stairs"),       MintBootstrap.getBlock("stripped_oak_log_stairs"))
+      .put(MintBootstrap.getBlock("spruce_log_stairs"),    MintBootstrap.getBlock("stripped_spruce_log_stairs"))
+      .put(MintBootstrap.getBlock("birch_log_stairs"),     MintBootstrap.getBlock("stripped_birch_log_stairs"))
+      .put(MintBootstrap.getBlock("jungle_log_stairs"),    MintBootstrap.getBlock("stripped_jungle_log_stairs"))
+      .put(MintBootstrap.getBlock("acacia_log_stairs"),    MintBootstrap.getBlock("stripped_acacia_log_stairs"))
+      .put(MintBootstrap.getBlock("dark_oak_log_stairs"),  MintBootstrap.getBlock("stripped_dark_oak_log_stairs"))
+      .put(MintBootstrap.getBlock("oak_wood_stairs"),      MintBootstrap.getBlock("stripped_oak_wood_stairs"))
+      .put(MintBootstrap.getBlock("spruce_wood_stairs"),   MintBootstrap.getBlock("stripped_spruce_wood_stairs"))
+      .put(MintBootstrap.getBlock("birch_wood_stairs"),    MintBootstrap.getBlock("stripped_birch_wood_stairs"))
+      .put(MintBootstrap.getBlock("jungle_wood_stairs"),   MintBootstrap.getBlock("stripped_jungle_wood_stairs"))
+      .put(MintBootstrap.getBlock("acacia_wood_stairs"),   MintBootstrap.getBlock("stripped_acacia_wood_stairs"))
+      .put(MintBootstrap.getBlock("dark_oak_wood_stairs"), MintBootstrap.getBlock("stripped_dark_oak_wood_stairs"))
+      .put(MintBootstrap.getBlock("oak_log_slab"),         MintBootstrap.getBlock("stripped_oak_log_slab"))
+      .put(MintBootstrap.getBlock("spruce_log_slab"),      MintBootstrap.getBlock("stripped_spruce_log_slab"))
+      .put(MintBootstrap.getBlock("birch_log_slab"),       MintBootstrap.getBlock("stripped_birch_log_slab"))
+      .put(MintBootstrap.getBlock("jungle_log_slab"),      MintBootstrap.getBlock("stripped_jungle_log_slab"))
+      .put(MintBootstrap.getBlock("acacia_log_slab"),      MintBootstrap.getBlock("stripped_acacia_log_slab"))
+      .put(MintBootstrap.getBlock("dark_oak_log_slab"),    MintBootstrap.getBlock("stripped_dark_oak_log_slab"))
+      .put(MintBootstrap.getBlock("oak_wood_slab"),        MintBootstrap.getBlock("stripped_oak_wood_slab"))
+      .put(MintBootstrap.getBlock("spruce_wood_slab"),     MintBootstrap.getBlock("stripped_spruce_wood_slab"))
+      .put(MintBootstrap.getBlock("birch_wood_slab"),      MintBootstrap.getBlock("stripped_birch_wood_slab"))
+      .put(MintBootstrap.getBlock("jungle_wood_slab"),     MintBootstrap.getBlock("stripped_jungle_wood_slab"))
+      .put(MintBootstrap.getBlock("acacia_wood_slab"),     MintBootstrap.getBlock("stripped_acacia_wood_slab"))
+      .put(MintBootstrap.getBlock("dark_oak_wood_slab"),   MintBootstrap.getBlock("stripped_dark_oak_wood_slab"))
+      .build()
+  );
 
   private AxeItemMixin() {}
 
@@ -67,7 +70,7 @@ final class AxeItemMixin {
   private Object getValueOrMintValueIfNull(final Map map, final Object key) {
     @Nullable final Object value = map.get(key);
 
-    return value == null ? AxeItemMixin.MINT_BLOCK_STRIPPING_MAP.get(key) : value;
+    return value == null ? AxeItemMixin.MINT_BLOCK_STRIPPING_MAP.get().get(key) : value;
   }
 
   /**
