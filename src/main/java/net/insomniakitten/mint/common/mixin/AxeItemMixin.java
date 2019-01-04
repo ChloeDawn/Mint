@@ -67,7 +67,7 @@ final class AxeItemMixin {
    */
   @SuppressWarnings("SuspiciousMethodCalls")
   @Redirect(method = "useOnBlock", at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"))
-  private Object getValueOrMintValueIfNull(final Map map, final Object key) {
+  private Object mint$useOnBlock$get(final Map map, final Object key) {
     @Nullable final Object value = map.get(key);
 
     return value == null ? AxeItemMixin.MINT_BLOCK_STRIPPING_MAP.get().get(key) : value;

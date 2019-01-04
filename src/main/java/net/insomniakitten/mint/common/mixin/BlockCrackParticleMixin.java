@@ -35,7 +35,7 @@ final class BlockCrackParticleMixin {
    * @author InsomniaKitten
    */
   @Inject(method = "updateColor", at = @At("HEAD"), cancellable = true)
-  private void returnIfSourceIsGrassSlabOrStairs(final CallbackInfo ci) {
+  private void mint$updateColor(final CallbackInfo ci) {
     final Block block = this.block.getBlock();
 
     if (block instanceof GrassSlabBlock || block instanceof GrassStairsBlock) {
