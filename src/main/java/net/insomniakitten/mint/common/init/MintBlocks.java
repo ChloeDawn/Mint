@@ -3,6 +3,8 @@ package net.insomniakitten.mint.common.init;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
 import net.insomniakitten.mint.common.Mint;
+import net.insomniakitten.mint.common.block.BookshelfSlabBlock;
+import net.insomniakitten.mint.common.block.BookshelfStairsBlock;
 import net.insomniakitten.mint.common.block.DirtSlabBlock;
 import net.insomniakitten.mint.common.block.DirtStairsBlock;
 import net.insomniakitten.mint.common.block.GrassSlabBlock;
@@ -294,6 +296,9 @@ final class MintBlocks {
 
     this.registerBlock("sand_layer", new SandLayerBlock(Blocks.SAND));
     this.registerBlock("red_sand_layer", new SandLayerBlock(Blocks.RED_SAND));
+
+    this.registerBlock("bookshelf_stairs", new BookshelfStairsBlock());
+    this.registerBlock("bookshelf_slab", new BookshelfSlabBlock());
 
     final Stopwatch stopwatchResult = stopwatch.stop();
     final long elapsed = stopwatchResult.elapsed(TimeUnit.MILLISECONDS);

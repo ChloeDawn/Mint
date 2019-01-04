@@ -60,5 +60,7 @@
   "block.mint.grass_block_stairs": "Grass Block Stairs",
   "block.mint.grass_block_slab": "Grass Block Slab",
   "block.mint.sand_layer": "Sand Layer",
-  "block.mint.red_sand_layer": "Red Sand Layer"
+  "block.mint.red_sand_layer": "Red Sand Layer",
+  "block.mint.bookshelf_stairs": "Bookshelf Stairs",
+  "block.mint.bookshelf_slab": "Bookshelf Slab"
 }

@@ -279,6 +279,9 @@ final class MintItems {
     this.registerBlockItem("sand_layer", ItemGroup.DECORATIONS);
     this.registerBlockItem("red_sand_layer", ItemGroup.DECORATIONS);
 
+    this.registerBlockItem("bookshelf_stairs", ItemGroup.BUILDING_BLOCKS);
+    this.registerBlockItem("bookshelf_slab", ItemGroup.BUILDING_BLOCKS);
+
     final Stopwatch stopwatchResult = stopwatch.stop();
     final long elapsed = stopwatchResult.elapsed(TimeUnit.MILLISECONDS);
 
