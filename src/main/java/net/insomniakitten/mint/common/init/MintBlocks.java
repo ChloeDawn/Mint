@@ -2,7 +2,6 @@ package net.insomniakitten.mint.common.init;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
-import net.fabricmc.api.ModInitializer;
 import net.insomniakitten.mint.common.Mint;
 import net.insomniakitten.mint.common.block.GrassSlabBlock;
 import net.insomniakitten.mint.common.block.GrassStairsBlock;
@@ -16,7 +15,7 @@ import net.insomniakitten.mint.common.block.SimpleSlabBlock;
 import net.insomniakitten.mint.common.block.SimpleStairsBlock;
 import net.insomniakitten.mint.common.block.TranslucentSlabBlock;
 import net.insomniakitten.mint.common.block.TranslucentStairsBlock;
-import net.insomniakitten.mint.common.util.state.RegistrationState;
+import net.insomniakitten.mint.common.state.RegistrationState;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IceBlock;
@@ -31,25 +30,19 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Listener class for Mint's block registration and lookups.
  * Handles registration of Mint's blocks, and allows for retrieving
  * the instance or name of registered Mint blocks
  *
  * @author InsomniaKitten
  */
-public final class MintBlocks implements ModInitializer {
-  private static final MintBlocks INSTANCE = new MintBlocks();
+final class MintBlocks {
+  static final MintBlocks INSTANCE = new MintBlocks();
 
   private static final Logger LOGGER = Mint.getLogger("blocks");
 
-  static {
-    Mint.setInstanceForLoader(MintBlocks.class, MintBlocks.INSTANCE);
-    MintBlocks.INSTANCE.registerBlocks(); // todo
-  }
-
   private volatile RegistrationState state = RegistrationState.initial();
 
-  public MintBlocks() {} // todo
+  private MintBlocks() {}
 
   /**
    * Retrieves an {@link Block} for the given name from the block registry
@@ -60,12 +53,12 @@ public final class MintBlocks implements ModInitializer {
    * @param name The name of the block to be retrieved
    * @return The block, or {@link Blocks#AIR} if not found
    */
-  public static Block byName(final String name) {
-    if (MintBlocks.INSTANCE.state.isUnregistered()) {
+  Block getBlock(final String name) {
+    if (this.state.isUnregistered()) {
       throw new UnsupportedOperationException("Blocks not registered");
     }
 
-    if (MintBlocks.INSTANCE.state.isRegistering()) {
+    if (this.state.isRegistering()) {
       throw new ConcurrentModificationException("Blocks still registering");
     }
 
@@ -82,21 +75,16 @@ public final class MintBlocks implements ModInitializer {
    * @param block The block to retrieve the name of
    * @return The name of the block
    */
-  public static Identifier getName(final Block block) {
-    if (MintBlocks.INSTANCE.state.isUnregistered()) {
+  Identifier getName(final Block block) {
+    if (this.state.isUnregistered()) {
       throw new UnsupportedOperationException("Blocks not registered");
     }
 
-    if (MintBlocks.INSTANCE.state.isRegistering()) {
+    if (this.state.isRegistering()) {
       throw new ConcurrentModificationException("Blocks still registering");
     }
 
     return Objects.requireNonNull(Registry.BLOCK.getId(block), "name");
-  }
-
-  @Override
-  public void onInitialize() {
-    //this.registerBlocks();
   }
 
   @Override
@@ -108,7 +96,7 @@ public final class MintBlocks implements ModInitializer {
    * Registers all of Mint's blocks to the block registry. If this is called whilst already
    * executing, or if registration has been completed, an exception will be thrown.
    */
-  private void registerBlocks() {
+  void registerBlocks() {
     if (this.state.isRegistered()) {
       throw new UnsupportedOperationException("Blocks already registered");
     }

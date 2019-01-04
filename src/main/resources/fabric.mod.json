@@ -10,10 +10,10 @@
       "website": "https://github.com/InsomniaKitten"
     }
   ],
+  "languageAdapter": "net.insomniakitten.mint.common.Instance$Adapter",
   "initializers": [
-    "net.insomniakitten.mint.common.init.MintBlocks",
-    "net.insomniakitten.mint.common.init.MintItems",
-    "net.insomniakitten.mint.client.MintClient"
+    "net.insomniakitten.mint.common.init.MintBootstrap",
+    "net.insomniakitten.mint.client.init.MintClientBootstrap"
   ],
   "mixins": {
     "common": [

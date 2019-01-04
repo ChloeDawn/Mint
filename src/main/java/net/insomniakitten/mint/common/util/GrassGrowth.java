@@ -2,7 +2,7 @@ package net.insomniakitten.mint.common.util;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
-import net.insomniakitten.mint.common.init.MintBlocks;
+import net.insomniakitten.mint.common.init.MintBootstrap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -21,8 +21,8 @@ import javax.annotation.Nullable;
 public final class GrassGrowth {
   private static final BiMap<Block, Block> CONVERSION_MAP = ImmutableBiMap.of(
     Blocks.DIRT,                      Blocks.GRASS_BLOCK,
-    MintBlocks.byName("dirt_stairs"), MintBlocks.byName("grass_block_stairs"),
-    MintBlocks.byName("dirt_slab"),   MintBlocks.byName("grass_block_slab")
+    MintBootstrap.getBlock("dirt_stairs"), MintBootstrap.getBlock("grass_block_stairs"),
+    MintBootstrap.getBlock("dirt_slab"),   MintBootstrap.getBlock("grass_block_slab")
   );
 
   private GrassGrowth() {}

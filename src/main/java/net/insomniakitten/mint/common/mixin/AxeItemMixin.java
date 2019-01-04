@@ -3,7 +3,7 @@ package net.insomniakitten.mint.common.mixin;
 import com.google.common.collect.ImmutableMap;
 import net.insomniakitten.mint.common.block.RotatedSlabBlock;
 import net.insomniakitten.mint.common.block.RotatedStairsBlock;
-import net.insomniakitten.mint.common.init.MintBlocks;
+import net.insomniakitten.mint.common.init.MintBootstrap;
 import net.insomniakitten.mint.common.util.BlockStates;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -25,30 +25,30 @@ import java.util.Map;
 @Mixin(AxeItem.class)
 final class AxeItemMixin {
   private static final Map<Block, Block> MINT_BLOCK_STRIPPING_MAP = ImmutableMap.<Block, Block>builder()
-    .put(MintBlocks.byName("oak_log_stairs"),       MintBlocks.byName("stripped_oak_log_stairs"))
-    .put(MintBlocks.byName("spruce_log_stairs"),    MintBlocks.byName("stripped_spruce_log_stairs"))
-    .put(MintBlocks.byName("birch_log_stairs"),     MintBlocks.byName("stripped_birch_log_stairs"))
-    .put(MintBlocks.byName("jungle_log_stairs"),    MintBlocks.byName("stripped_jungle_log_stairs"))
-    .put(MintBlocks.byName("acacia_log_stairs"),    MintBlocks.byName("stripped_acacia_log_stairs"))
-    .put(MintBlocks.byName("dark_oak_log_stairs"),  MintBlocks.byName("stripped_dark_oak_log_stairs"))
-    .put(MintBlocks.byName("oak_wood_stairs"),      MintBlocks.byName("stripped_oak_wood_stairs"))
-    .put(MintBlocks.byName("spruce_wood_stairs"),   MintBlocks.byName("stripped_spruce_wood_stairs"))
-    .put(MintBlocks.byName("birch_wood_stairs"),    MintBlocks.byName("stripped_birch_wood_stairs"))
-    .put(MintBlocks.byName("jungle_wood_stairs"),   MintBlocks.byName("stripped_jungle_wood_stairs"))
-    .put(MintBlocks.byName("acacia_wood_stairs"),   MintBlocks.byName("stripped_acacia_wood_stairs"))
-    .put(MintBlocks.byName("dark_oak_wood_stairs"), MintBlocks.byName("stripped_dark_oak_wood_stairs"))
-    .put(MintBlocks.byName("oak_log_slab"),         MintBlocks.byName("stripped_oak_log_slab"))
-    .put(MintBlocks.byName("spruce_log_slab"),      MintBlocks.byName("stripped_spruce_log_slab"))
-    .put(MintBlocks.byName("birch_log_slab"),       MintBlocks.byName("stripped_birch_log_slab"))
-    .put(MintBlocks.byName("jungle_log_slab"),      MintBlocks.byName("stripped_jungle_log_slab"))
-    .put(MintBlocks.byName("acacia_log_slab"),      MintBlocks.byName("stripped_acacia_log_slab"))
-    .put(MintBlocks.byName("dark_oak_log_slab"),    MintBlocks.byName("stripped_dark_oak_log_slab"))
-    .put(MintBlocks.byName("oak_wood_slab"),        MintBlocks.byName("stripped_oak_wood_slab"))
-    .put(MintBlocks.byName("spruce_wood_slab"),     MintBlocks.byName("stripped_spruce_wood_slab"))
-    .put(MintBlocks.byName("birch_wood_slab"),      MintBlocks.byName("stripped_birch_wood_slab"))
-    .put(MintBlocks.byName("jungle_wood_slab"),     MintBlocks.byName("stripped_jungle_wood_slab"))
-    .put(MintBlocks.byName("acacia_wood_slab"),     MintBlocks.byName("stripped_acacia_wood_slab"))
-    .put(MintBlocks.byName("dark_oak_wood_slab"),   MintBlocks.byName("stripped_dark_oak_wood_slab"))
+    .put(MintBootstrap.getBlock("oak_log_stairs"),       MintBootstrap.getBlock("stripped_oak_log_stairs"))
+    .put(MintBootstrap.getBlock("spruce_log_stairs"),    MintBootstrap.getBlock("stripped_spruce_log_stairs"))
+    .put(MintBootstrap.getBlock("birch_log_stairs"),     MintBootstrap.getBlock("stripped_birch_log_stairs"))
+    .put(MintBootstrap.getBlock("jungle_log_stairs"),    MintBootstrap.getBlock("stripped_jungle_log_stairs"))
+    .put(MintBootstrap.getBlock("acacia_log_stairs"),    MintBootstrap.getBlock("stripped_acacia_log_stairs"))
+    .put(MintBootstrap.getBlock("dark_oak_log_stairs"),  MintBootstrap.getBlock("stripped_dark_oak_log_stairs"))
+    .put(MintBootstrap.getBlock("oak_wood_stairs"),      MintBootstrap.getBlock("stripped_oak_wood_stairs"))
+    .put(MintBootstrap.getBlock("spruce_wood_stairs"),   MintBootstrap.getBlock("stripped_spruce_wood_stairs"))
+    .put(MintBootstrap.getBlock("birch_wood_stairs"),    MintBootstrap.getBlock("stripped_birch_wood_stairs"))
+    .put(MintBootstrap.getBlock("jungle_wood_stairs"),   MintBootstrap.getBlock("stripped_jungle_wood_stairs"))
+    .put(MintBootstrap.getBlock("acacia_wood_stairs"),   MintBootstrap.getBlock("stripped_acacia_wood_stairs"))
+    .put(MintBootstrap.getBlock("dark_oak_wood_stairs"), MintBootstrap.getBlock("stripped_dark_oak_wood_stairs"))
+    .put(MintBootstrap.getBlock("oak_log_slab"),         MintBootstrap.getBlock("stripped_oak_log_slab"))
+    .put(MintBootstrap.getBlock("spruce_log_slab"),      MintBootstrap.getBlock("stripped_spruce_log_slab"))
+    .put(MintBootstrap.getBlock("birch_log_slab"),       MintBootstrap.getBlock("stripped_birch_log_slab"))
+    .put(MintBootstrap.getBlock("jungle_log_slab"),      MintBootstrap.getBlock("stripped_jungle_log_slab"))
+    .put(MintBootstrap.getBlock("acacia_log_slab"),      MintBootstrap.getBlock("stripped_acacia_log_slab"))
+    .put(MintBootstrap.getBlock("dark_oak_log_slab"),    MintBootstrap.getBlock("stripped_dark_oak_log_slab"))
+    .put(MintBootstrap.getBlock("oak_wood_slab"),        MintBootstrap.getBlock("stripped_oak_wood_slab"))
+    .put(MintBootstrap.getBlock("spruce_wood_slab"),     MintBootstrap.getBlock("stripped_spruce_wood_slab"))
+    .put(MintBootstrap.getBlock("birch_wood_slab"),      MintBootstrap.getBlock("stripped_birch_wood_slab"))
+    .put(MintBootstrap.getBlock("jungle_wood_slab"),     MintBootstrap.getBlock("stripped_jungle_wood_slab"))
+    .put(MintBootstrap.getBlock("acacia_wood_slab"),     MintBootstrap.getBlock("stripped_acacia_wood_slab"))
+    .put(MintBootstrap.getBlock("dark_oak_wood_slab"),   MintBootstrap.getBlock("stripped_dark_oak_wood_slab"))
     .build();
 
   private AxeItemMixin() {}

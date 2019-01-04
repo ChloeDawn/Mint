@@ -1,6 +1,6 @@
 package net.insomniakitten.mint.common.mixin;
 
-import net.insomniakitten.mint.common.init.MintBlocks;
+import net.insomniakitten.mint.common.init.MintBootstrap;
 import net.minecraft.block.Block;
 import net.minecraft.item.ShovelItem;
 import org.spongepowered.asm.mixin.Final;
@@ -33,9 +33,9 @@ final class ShovelItemMixin {
    * @author InsomniaKitten
    */
   private static void mint$appendToEffectiveBlocksSet() {
-    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBlocks.byName("dirt_stairs"));
-    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBlocks.byName("dirt_slab"));
-    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBlocks.byName("grass_block_stairs"));
-    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBlocks.byName("grass_block_slab"));
+    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBootstrap.getBlock("dirt_stairs"));
+    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBootstrap.getBlock("dirt_slab"));
+    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBootstrap.getBlock("grass_block_stairs"));
+    ShovelItemMixin.EFFECTIVE_BLOCKS.add(MintBootstrap.getBlock("grass_block_slab"));
   }
 }

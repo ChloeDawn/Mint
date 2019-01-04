@@ -14,12 +14,8 @@ import javax.annotation.Nullable;
  *
  * @author InsomniaKitten
  */
-//@Mod(id = Mint.ID, name = Mint.NAME, version = Mint.VERSION, authors = Mint.AUTHOR)
 public final class Mint {
-  public static final String ID = "mint";
-  public static final String NAME = "Mint";
-  public static final String VERSION = "0.1.0";
-  public static final String AUTHOR = "InsomniaKitten";
+  private static final String ID = "mint";
 
   private static final Logger LOGGER = Mint.getLogger("main");
 
@@ -69,19 +65,5 @@ public final class Mint {
       }
     }
     return Mint.deobfRuntime;
-  }
-
-  /**
-   * Assigns the given instance to the given class in Rift's loader
-   *
-   * @param clazz The class to have an instance assigned for
-   * @param instance The instance to be assigned to the class
-   *   //@see RiftLoader#setInstanceForListenerClass(Class, Object)
-   *   //@see RiftLoader#listenerInstanceMap
-   */
-  @Deprecated
-  public static <T> void setInstanceForLoader(final Class<T> clazz, final T instance) {
-    //Mint.LOGGER.debug("Assigning instance {} for {}", instance, clazz);
-    //RiftLoader.instance.setInstanceForListenerClass(clazz, instance);
   }
 }

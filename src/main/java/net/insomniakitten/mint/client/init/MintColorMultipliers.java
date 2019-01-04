@@ -1,14 +1,12 @@
-package net.insomniakitten.mint.client;
+package net.insomniakitten.mint.client.init;
 
 import com.google.common.base.MoreObjects;
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.insomniakitten.mint.client.color.BlockItemColorMultiplier;
 import net.insomniakitten.mint.client.color.GrassBlockColorMultiplier;
 import net.insomniakitten.mint.common.Mint;
-import net.insomniakitten.mint.common.init.MintBlocks;
-import net.insomniakitten.mint.common.init.MintItems;
-import net.insomniakitten.mint.common.util.state.RegistrationState;
+import net.insomniakitten.mint.common.init.MintBootstrap;
+import net.insomniakitten.mint.common.state.RegistrationState;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.block.BlockColorMap;
 import net.minecraft.client.render.block.BlockColorMapper;
@@ -19,33 +17,19 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ConcurrentModificationException;
 
-// FIXME Rift needs a listener specifically for block and item color multiplier registration
-// FIXME Rift needs a hook or patch to expose the ItemColors instance in the Minecraft class
-
 /**
- * Listener class for Mint's client implementation.
- * Handles registration of color multipliers for blocks and items
+ * Listener class for registration for Mint's color multiplier registration
  *
  * @author InsomniaKitten
  */
-public final class MintClient implements ClientModInitializer {
-  private static final MintClient INSTANCE = new MintClient();
+final class MintColorMultipliers {
+  static final MintColorMultipliers INSTANCE = new MintColorMultipliers();
 
-  private static final Logger LOGGER = Mint.getLogger("client");
-
-  static {
-    Mint.setInstanceForLoader(MintClient.class, MintClient.INSTANCE);
-    MintClient.INSTANCE.registerColorMultipliers(); // todo
-  }
+  private static final Logger LOGGER = Mint.getLogger("client.colormultipliers");
 
   private volatile RegistrationState state = RegistrationState.initial();
 
-  public MintClient() {} // todo
-
-  @Override
-  public void onInitializeClient() {
-
-  }
+  private MintColorMultipliers() {}
 
   @Override
   public String toString() {
@@ -56,7 +40,7 @@ public final class MintClient implements ClientModInitializer {
    * Looks up the game's {@link BlockColorMap} and {@link ItemColorMap} instances
    * and registers color multipliers to them for Mint's blocks and items
    */
-  private void registerColorMultipliers() {
+  void registerColorMultipliers() {
     if (this.state.isRegistered()) {
       throw new UnsupportedOperationException("Already registered");
     }
@@ -67,19 +51,19 @@ public final class MintClient implements ClientModInitializer {
 
     this.state = RegistrationState.REGISTERING;
 
-    MintClient.LOGGER.info("Registering block color multipliers");
+    MintColorMultipliers.LOGGER.info("Registering block color multipliers");
 
     final BlockColorMapper grassColor = new GrassBlockColorMultiplier(0.5, 1.0);
 
-    this.registerColorMultiplier(grassColor, MintBlocks.byName("grass_block_stairs"));
-    this.registerColorMultiplier(grassColor, MintBlocks.byName("grass_block_slab"));
+    this.registerColorMultiplier(grassColor, MintBootstrap.getBlock("grass_block_stairs"));
+    this.registerColorMultiplier(grassColor, MintBootstrap.getBlock("grass_block_slab"));
 
-    MintClient.LOGGER.info("Registering item color multipliers");
+    MintColorMultipliers.LOGGER.info("Registering item color multipliers");
 
     final ItemColorMapper blockColor = new BlockItemColorMultiplier();
 
-    this.registerColorMultiplier(blockColor, MintItems.byName("grass_block_stairs"));
-    this.registerColorMultiplier(blockColor, MintItems.byName("grass_block_slab"));
+    this.registerColorMultiplier(blockColor, MintBootstrap.getItem("grass_block_stairs"));
+    this.registerColorMultiplier(blockColor, MintBootstrap.getItem("grass_block_slab"));
 
     this.state = RegistrationState.REGISTERED;
   }
@@ -91,7 +75,7 @@ public final class MintClient implements ClientModInitializer {
    * @param block The block to register the color multiplier for
    */
   private void registerColorMultiplier(final BlockColorMapper mapper, final Block block) {
-    MintClient.LOGGER.debug("Registering color multiplier {} for {}", mapper, MintBlocks.getName(block));
+    MintColorMultipliers.LOGGER.debug("Registering color multiplier {} for {}", mapper, MintBootstrap.getName(block));
     ColorProviderRegistry.BLOCK.register(mapper, block);
   }
 
@@ -102,7 +86,7 @@ public final class MintClient implements ClientModInitializer {
    * @param item The item to register the color multiplier for
    */
   private void registerColorMultiplier(final ItemColorMapper mapper, final Item item) {
-    MintClient.LOGGER.debug("Registering color multiplier {} for {}", mapper, MintItems.getName(item));
+    MintColorMultipliers.LOGGER.debug("Registering color multiplier {} for {}", mapper, MintBootstrap.getName(item));
     ColorProviderRegistry.ITEM.register(mapper, item);
   }
 }

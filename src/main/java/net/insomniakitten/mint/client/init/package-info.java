@@ -1,4 +1,4 @@
 @NonNullByDefault
-package net.insomniakitten.mint.common.block;
+package net.insomniakitten.mint.client.init;
 
 import net.insomniakitten.mint.common.intrinsic.NonNullByDefault;

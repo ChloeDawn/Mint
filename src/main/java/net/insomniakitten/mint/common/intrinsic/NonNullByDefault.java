@@ -1,4 +1,4 @@
-package net.insomniakitten.mint.common.util.intrinsics;
+package net.insomniakitten.mint.common.intrinsic;
 
 import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;

@@ -2,9 +2,8 @@ package net.insomniakitten.mint.common.init;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
-import net.fabricmc.api.ModInitializer;
 import net.insomniakitten.mint.common.Mint;
-import net.insomniakitten.mint.common.util.state.RegistrationState;
+import net.insomniakitten.mint.common.state.RegistrationState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
@@ -20,25 +19,19 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Listener class for Mint's item registration and lookups.
  * Handles registration of Mint's items, and allows for retrieving
  * the instance or name of registered Mint items
  *
  * @author InsomniaKitten
  */
-public final class MintItems implements ModInitializer {
-  private static final MintItems INSTANCE = new MintItems();
+final class MintItems {
+  static final MintItems INSTANCE = new MintItems();
 
   private static final Logger LOGGER = Mint.getLogger("items");
 
-  static {
-    Mint.setInstanceForLoader(MintItems.class, MintItems.INSTANCE);
-    MintItems.INSTANCE.registerItems(); // todo
-  }
-
   private volatile RegistrationState state = RegistrationState.initial();
 
-  public MintItems() {} // todo
+  private MintItems() {}
 
   /**
    * Retrieves an {@link Item} for the given name from the item registry
@@ -49,12 +42,12 @@ public final class MintItems implements ModInitializer {
    * @param name The name of the item to be retrieved
    * @return The item, or {@link Items#AIR} if not found
    */
-  public static Item byName(final String name) {
-    if (MintItems.INSTANCE.state.isUnregistered()) {
+  Item getItem(final String name) {
+    if (this.state.isUnregistered()) {
       throw new UnsupportedOperationException("Items not registered");
     }
 
-    if (MintItems.INSTANCE.state.isRegistering()) {
+    if (this.state.isRegistering()) {
       throw new ConcurrentModificationException("Items still registering");
     }
 
@@ -71,21 +64,16 @@ public final class MintItems implements ModInitializer {
    * @param item The item to retrieve the name of
    * @return The name of the item
    */
-  public static Identifier getName(final Item item) {
-    if (MintItems.INSTANCE.state.isUnregistered()) {
+  Identifier getName(final Item item) {
+    if (this.state.isUnregistered()) {
       throw new UnsupportedOperationException("Items not registered");
     }
 
-    if (MintItems.INSTANCE.state.isRegistering()) {
+    if (this.state.isRegistering()) {
       throw new ConcurrentModificationException("Items still registering");
     }
 
     return Objects.requireNonNull(Registry.ITEM.getId(item), "name");
-  }
-
-  @Override
-  public void onInitialize() {
-    //this.registerItems();
   }
 
   @Override
@@ -97,7 +85,7 @@ public final class MintItems implements ModInitializer {
    * Registers all of Mint's items to the item registry. If this is called whilst already
    * executing, or if registration has been completed, an exception will be thrown.
    */
-  private void registerItems() {
+  void registerItems() {
     if (this.state.isRegistered()) {
       throw new UnsupportedOperationException("Items already registered");
     }
@@ -316,7 +304,7 @@ public final class MintItems implements ModInitializer {
   /**
    * Registers an {@link BlockItem} with the given name to the item registry
    * The item is inferred from the given name, wrapped as a {@link Identifier}
-   * and passed to {@link MintBlocks#byName(String)} to retrieve the related block
+   * and passed to {@link MintBlocks#getBlock(String)} to retrieve the related block
    *
    * @param name The name of the block item being registered
    * @param group The group that the block item should be assigned to
@@ -324,7 +312,7 @@ public final class MintItems implements ModInitializer {
   private void registerBlockItem(final String name, final ItemGroup group) {
     final Identifier key = Mint.withNamespace(name);
     final Item.Settings settings = new Item.Settings().itemGroup(group);
-    final BlockItem item = new BlockItem(MintBlocks.byName(name), settings);
+    final BlockItem item = new BlockItem(MintBootstrap.getBlock(name), settings);
 
     MintItems.LOGGER.debug("Registering block item '{}'", key);
     Registry.ITEM.register(key, item);

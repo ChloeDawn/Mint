@@ -1,4 +1,4 @@
-package net.insomniakitten.mint.common.util.state;
+package net.insomniakitten.mint.common.state;
 
 import java.util.ConcurrentModificationException;
 import java.util.Locale;
