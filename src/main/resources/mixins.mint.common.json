@@ -9,7 +9,6 @@
     "AxeItemMixin",
     "BlockCrackParticleMixin",
     "PlantBlockMixin",
-    "ShovelItemMixin",
     "SpreadableBlockMixin",
     "TransparentBlockMixin"
   ],

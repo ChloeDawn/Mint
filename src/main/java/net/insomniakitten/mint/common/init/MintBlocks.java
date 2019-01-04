@@ -3,6 +3,8 @@ package net.insomniakitten.mint.common.init;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
 import net.insomniakitten.mint.common.Mint;
+import net.insomniakitten.mint.common.block.DirtSlabBlock;
+import net.insomniakitten.mint.common.block.DirtStairsBlock;
 import net.insomniakitten.mint.common.block.GrassSlabBlock;
 import net.insomniakitten.mint.common.block.GrassStairsBlock;
 import net.insomniakitten.mint.common.block.IcePillarBlock;
@@ -284,8 +286,8 @@ final class MintBlocks {
     this.registerBlock("red_nether_brick_stairs", new SimpleStairsBlock(Blocks.RED_NETHER_BRICKS));
     this.registerBlock("red_nether_brick_slab", new SimpleSlabBlock(Blocks.RED_NETHER_BRICKS));
 
-    this.registerBlock("dirt_stairs", new SimpleStairsBlock(Blocks.DIRT));
-    this.registerBlock("dirt_slab", new SimpleSlabBlock(Blocks.DIRT));
+    this.registerBlock("dirt_stairs", new DirtStairsBlock());
+    this.registerBlock("dirt_slab", new DirtSlabBlock());
 
     this.registerBlock("grass_block_stairs", new GrassStairsBlock());
     this.registerBlock("grass_block_slab", new GrassSlabBlock());

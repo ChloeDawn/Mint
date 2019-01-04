@@ -1,5 +1,7 @@
 package net.insomniakitten.mint.common.block;
 
+import net.fabricmc.fabric.block.FabricBlockSettings;
+import net.fabricmc.fabric.tags.FabricItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
@@ -20,7 +22,9 @@ import java.util.Random;
 
 public class GrassStairsBlock extends SimpleStairsBlock implements ExtendedSpreadableBlock, Fertilizable {
   public GrassStairsBlock() {
-    super(Blocks.GRASS_BLOCK);
+    super(FabricBlockSettings.copy(Blocks.GRASS_BLOCK)
+      .breakByTool(FabricItemTags.SHOVELS)
+      .build(), Blocks.GRASS_BLOCK);
   }
 
   @Override

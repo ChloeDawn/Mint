@@ -3,7 +3,6 @@ package net.insomniakitten.mint.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MaterialColor;
-import net.minecraft.block.SlabBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.Properties;
@@ -15,16 +14,17 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class RotatedSlabBlock extends SlabBlock {
+public class RotatedSlabBlock extends SimpleSlabBlock {
   private final Block material;
 
   public RotatedSlabBlock(final Settings settings, final Block material) {
-    super(settings);
+    super(settings, material);
     this.material = material;
   }
 
   public RotatedSlabBlock(final Block material) {
-    this(Settings.copy(material), material);
+    super(material);
+    this.material = material;
   }
 
   @Override

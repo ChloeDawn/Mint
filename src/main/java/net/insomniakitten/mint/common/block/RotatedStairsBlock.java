@@ -3,7 +3,6 @@ package net.insomniakitten.mint.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MaterialColor;
-import net.minecraft.block.StairsBlock;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateFactory;
 import net.minecraft.state.property.Properties;
@@ -14,16 +13,17 @@ import net.minecraft.world.BlockView;
 
 import javax.annotation.Nullable;
 
-public class RotatedStairsBlock extends StairsBlock {
+public class RotatedStairsBlock extends SimpleStairsBlock {
   private final Block material;
 
   public RotatedStairsBlock(final Settings settings, final Block material) {
-    super(material.getDefaultState(), settings);
+    super(settings, material);
     this.material = material;
   }
 
   public RotatedStairsBlock(final Block material) {
-    this(Settings.copy(material), material);
+    super(material);
+    this.material = material;
   }
 
   @Override
