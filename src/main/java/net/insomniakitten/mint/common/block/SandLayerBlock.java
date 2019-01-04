@@ -5,7 +5,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PlacementEnvironment;
 import net.minecraft.block.Waterloggable;
-import net.minecraft.entity.VerticalEntityPosition;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -110,12 +109,6 @@ public class SandLayerBlock extends Block implements Waterloggable {
   @Deprecated
   public VoxelShape getBoundingShape(final BlockState state, final BlockView view, final BlockPos position) {
     return SandLayerBlock.VOXEL_SHAPES[state.get(Properties.LAYERS)];
-  }
-
-  @Override
-  @Deprecated
-  public VoxelShape getCollisionShape(final BlockState state, final BlockView view, final BlockPos position, final VerticalEntityPosition entityPosition) {
-    return SandLayerBlock.VOXEL_SHAPES[state.get(Properties.LAYERS) - 1];
   }
 
   @Override
