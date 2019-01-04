@@ -1,34 +1,27 @@
 package net.insomniakitten.mint.client;
 
 import com.google.common.base.MoreObjects;
-import net.insomniakitten.mint.Mint;
+import net.fabricmc.api.ClientModInitializer;
+import net.insomniakitten.mint.common.Mint;
 import net.insomniakitten.mint.client.color.BlockItemColorMultiplier;
 import net.insomniakitten.mint.client.color.GrassBlockColorMultiplier;
-import net.insomniakitten.mint.init.MintBlocks;
-import net.insomniakitten.mint.init.MintItems;
-import net.insomniakitten.mint.util.FieldLookupException;
-import net.insomniakitten.mint.util.obf.Mapping;
-import net.insomniakitten.mint.util.state.RegistrationState;
-import net.insomniakitten.pylon.annotation.rift.Listener;
-import net.insomniakitten.pylon.ref.Side;
+import net.insomniakitten.mint.common.init.MintBlocks;
+import net.insomniakitten.mint.common.init.MintItems;
+import net.insomniakitten.mint.common.util.FieldLookupException;
+import net.insomniakitten.mint.common.util.obf.Mapping;
+import net.insomniakitten.mint.common.util.state.RegistrationState;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.block.BlockColorMap;
+import net.minecraft.client.render.block.BlockColorMapper;
+import net.minecraft.client.render.item.ItemColorMap;
+import net.minecraft.client.render.item.ItemColorMapper;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import org.apache.logging.log4j.Logger;
-import org.dimdev.rift.listener.client.TileEntityRendererAdder;
-import org.dimdev.rift.mixin.hook.client.MixinTileEntityRendererDispatcher;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ConcurrentModificationException;
-import java.util.Map;
 
 // FIXME Rift needs a listener specifically for block and item color multiplier registration
 // FIXME Rift needs a hook or patch to expose the ItemColors instance in the Minecraft class
@@ -39,126 +32,115 @@ import java.util.Map;
  *
  * @author InsomniaKitten
  */
-@Listener(priority = 1, side = Side.CLIENT)
-public final class MintClient implements TileEntityRendererAdder {
-    private static final MintClient INSTANCE = new MintClient();
+public final class MintClient implements ClientModInitializer {
+  private static final MintClient INSTANCE = new MintClient();
 
-    private static final Logger LOGGER = Mint.getLogger("client");
+  private static final Logger LOGGER = Mint.getLogger("client");
 
-    static {
-        Mint.setInstanceForLoader(MintClient.class, MintClient.INSTANCE);
+  static {
+    Mint.setInstanceForLoader(MintClient.class, MintClient.INSTANCE);
+  }
+
+  private final Mapping itemColorMap = Mapping.builder()
+    .intermediary("field_1760").named("itemColorMap").build();
+
+  private volatile RegistrationState state = RegistrationState.initial();
+
+  public MintClient() {} // todo
+
+  @Override
+  public void onInitializeClient() {
+    //this.registerColorMultipliers(); // fixme
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("state", this.state).toString();
+  }
+
+  /**
+   * Looks up the game's {@link BlockColorMap} and {@link ItemColorMap} instances
+   * and registers color multipliers to them for Mint's blocks and items
+   */
+  public void registerColorMultipliers() {
+    if (this.state.isRegistered()) {
+      throw new UnsupportedOperationException("Already registered");
     }
 
-    private final Mapping itemColors = Mapping.builder()
-        .notch("ay").srg("field_184128_aI").mcp("itemColors").build();
-
-    private volatile RegistrationState state = RegistrationState.initial();
-
-    private MintClient() {}
-
-    /**
-     * Called by Rift's {@link TileEntityRendererDispatcher} mixin
-     * Delegates to {@link MintClient#registerColorMultipliers()}
-     * This is a temporary workaround until Rift implements a listener
-     * type specifically for block and item color multiplier registration
-     *
-     * @see MixinTileEntityRendererDispatcher
-     */
-    @Override
-    public void addTileEntityRenderers(final Map<Class<? extends TileEntity>, TileEntityRenderer<? extends TileEntity>> renderers) {
-        this.registerColorMultipliers();
+    if (this.state.isRegistering()) {
+      throw new ConcurrentModificationException("Already registering");
     }
 
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this).add("state", this.state).toString();
+    this.state = RegistrationState.REGISTERING;
+
+    @Nullable final BlockColorMap blockColors = MinecraftClient.getInstance().getBlockColorMap();
+    @Nullable final ItemColorMap itemColors = this.getItemColorsMapReflectively();
+
+    if (blockColors == null) {
+      throw new IllegalStateException("BlockColors not initialized");
     }
 
-    /**
-     * Looks up the game's {@link BlockColors} and {@link ItemColors} instances
-     * and registers color multipliers to them for Mint's blocks and items
-     */
-    private void registerColorMultipliers() {
-        if (this.state.isRegistered()) {
-            throw new UnsupportedOperationException("Already registered");
-        }
-
-        if (this.state.isRegistering()) {
-            throw new ConcurrentModificationException("Already registering");
-        }
-
-        this.state = RegistrationState.REGISTERING;
-
-        @Nullable final BlockColors blockColors = Minecraft.getInstance().getBlockColors();
-        @Nullable final ItemColors itemColors = this.getItemColorsInstanceReflectively();
-
-        if (blockColors == null) {
-            throw new IllegalStateException("BlockColors not initialized");
-        }
-
-        if (itemColors == null) {
-            throw new IllegalStateException("ItemColors not initialized");
-        }
-
-        MintClient.LOGGER.info("Registering block color multipliers");
-
-        final IBlockColor grassColor = new GrassBlockColorMultiplier(0.5, 1.0);
-
-        this.registerColorMultiplier(blockColors, grassColor, MintBlocks.byName("grass_block_stairs"));
-        this.registerColorMultiplier(blockColors, grassColor, MintBlocks.byName("grass_block_slab"));
-
-        MintClient.LOGGER.info("Registering item color multipliers");
-
-        final IItemColor blockColor = new BlockItemColorMultiplier(blockColors);
-
-        this.registerColorMultiplier(itemColors, blockColor, MintItems.byName("grass_block_stairs"));
-        this.registerColorMultiplier(itemColors, blockColor, MintItems.byName("grass_block_slab"));
-
-        this.state = RegistrationState.REGISTERED;
+    if (itemColors == null) {
+      throw new IllegalStateException("ItemColors not initialized");
     }
 
-    /**
-     * Registers a color multiplier to the given {@link BlockColors} instance
-     *
-     * @param blockColors The block colors instance
-     * @param blockColor The block color multiplier to register
-     * @param block The block to register the color multiplier for
-     */
-    private void registerColorMultiplier(final BlockColors blockColors, final IBlockColor blockColor, final Block block) {
-        MintClient.LOGGER.debug("Registering color multiplier {} for {}", blockColor, MintBlocks.getName(block));
-        blockColors.register(blockColor, block);
+    MintClient.LOGGER.info("Registering block color multipliers");
+
+    final BlockColorMapper grassColor = new GrassBlockColorMultiplier(0.5, 1.0);
+
+    this.registerColorMultiplier(blockColors, grassColor, MintBlocks.byName("grass_block_stairs"));
+    this.registerColorMultiplier(blockColors, grassColor, MintBlocks.byName("grass_block_slab"));
+
+    MintClient.LOGGER.info("Registering item color multipliers");
+
+    final ItemColorMapper blockColor = new BlockItemColorMultiplier(blockColors);
+
+    this.registerColorMultiplier(itemColors, blockColor, MintItems.byName("grass_block_stairs"));
+    this.registerColorMultiplier(itemColors, blockColor, MintItems.byName("grass_block_slab"));
+
+    this.state = RegistrationState.REGISTERED;
+  }
+
+  /**
+   * Registers a color multiplier to the given {@link BlockColorMap}
+   *
+   * @param map The block color map
+   * @param mapper The block color multiplier to register
+   * @param block The block to register the color multiplier for
+   */
+  private void registerColorMultiplier(final BlockColorMap map, final BlockColorMapper mapper, final Block block) {
+    MintClient.LOGGER.debug("Registering color multiplier {} for {}", mapper, MintBlocks.getName(block));
+    map.register(mapper, block);
+  }
+
+  /**
+   * Registers a color multiplier to the given {@link ItemColorMapper}
+   *
+   * @param map The item color map
+   * @param mapper The item color multiplier to register
+   * @param item The item to register the color multiplier for
+   */
+  private void registerColorMultiplier(final ItemColorMap map, final ItemColorMapper mapper, final Item item) {
+    MintClient.LOGGER.debug("Registering color multiplier {} for {}", mapper, MintItems.getName(item));
+    map.register(mapper, item);
+  }
+
+  /**
+   * Reflectively looks up the value of {@link MinecraftClient#itemColorMap}
+   *
+   * @return The game's {@link ItemColorMap} instance, or `null` if the field value is `null`
+   */
+  @Nullable
+  private ItemColorMap getItemColorsMapReflectively() {
+    final String fieldName = this.itemColorMap.getValue();
+    try {
+      final Field field = MinecraftClient.class.getDeclaredField(fieldName);
+
+      field.setAccessible(true);
+
+      return (ItemColorMap) field.get(MinecraftClient.getInstance());
+    } catch (final NoSuchFieldException | IllegalAccessException e) {
+      throw new FieldLookupException(fieldName, e);
     }
-
-    /**
-     * Registers a color multiplier to the given {@link ItemColors} instance
-     *
-     * @param itemColors The item colors instance
-     * @param itemColor The item color multiplier to register
-     * @param item The item to register the color multiplier for
-     */
-    private void registerColorMultiplier(final ItemColors itemColors, final IItemColor itemColor, final Item item) {
-        MintClient.LOGGER.debug("Registering color multiplier {} for {}", itemColor, MintItems.getName(item));
-        itemColors.register(itemColor, item);
-    }
-
-    /**
-     * Reflects into {@link Minecraft} to retrieve the value of {@link Minecraft#itemColors}
-     * This is a temporary workaround until Rift adds a hook for retrieving the instance
-     * without the requirement of reflection or an access transformer
-     *
-     * @return The game's {@link ItemColors} instance, or `null` if the field value is `null`
-     */
-    @Nullable
-    private ItemColors getItemColorsInstanceReflectively() {
-        final String fieldName = this.itemColors.getValue();
-        try {
-            final Field field = Minecraft.class.getDeclaredField(fieldName);
-
-            field.setAccessible(true);
-
-            return (ItemColors) field.get(Minecraft.getInstance());
-        } catch (final NoSuchFieldException | IllegalAccessException e) {
-            throw new FieldLookupException(fieldName, e);
-        }
-    }
+  }
 }

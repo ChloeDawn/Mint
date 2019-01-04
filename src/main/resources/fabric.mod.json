@@ -1,0 +1,27 @@
+{
+  "id": "mint",
+  "name": "Mint",
+  "version": "@version@",
+  "license": "Apache 2.0",
+  "side": "universal",
+  "authors": [
+    {
+      "name": "InsomniaKitten",
+      "website": "https://github.com/InsomniaKitten"
+    }
+  ],
+  "initializers": [
+    "net.insomniakitten.mint.common.init.MintBlocks",
+    "net.insomniakitten.mint.common.init.MintItems",
+    "net.insomniakitten.mint.client.MintClient"
+  ],
+  "mixins": {
+    "common": [
+      "mixins.mint.client.json",
+      "mixins.mint.common.json"
+    ]
+  },
+  "requires": {
+    "fabric": "*"
+  }
+}

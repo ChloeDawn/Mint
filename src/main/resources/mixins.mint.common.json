@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.7.11",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@environment(DEFAULT)",
+  "package": "net.insomniakitten.mint.common.mixin",
+  "refmap": "mixins.mint.refmap.json",
+  "mixins": [
+    "AxeItemMixin",
+    "BlockCrackParticleMixin",
+    "PlantBlockMixin",
+    "ShovelItemMixin",
+    "SpreadableBlockMixin",
+    "TransparentBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1,
+    "defaultGroup": "default",
+    "maxShiftBy": 0
+  },
+  "overwrites": {
+    "conformVisibility": true,
+    "requireAnnotations": true
+  }
+}
