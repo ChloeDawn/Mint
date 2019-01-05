@@ -51,7 +51,7 @@ final class EnchantingTableContainerMixin {
    * @author InsomniaKitten
    */
   @Redirect(method = "onContentChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"), require = 6)
-  private BlockState mint$onContentsChanged$getBlock(final World world, final BlockPos position) {
+  private BlockState mint$onContentsChanged$getBlockState(final World world, final BlockPos position) {
     final BlockState state = world.getBlockState(position);
     final Block block = state.getBlock();
 
