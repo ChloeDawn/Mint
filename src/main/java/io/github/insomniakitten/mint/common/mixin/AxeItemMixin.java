@@ -25,6 +25,9 @@ import java.util.Map;
  */
 @Mixin(AxeItem.class)
 final class AxeItemMixin {
+  /**
+   * @see AxeItemMixin
+   */
   private static final Lazy<Map<Block, Block>> MINT_BLOCK_STRIPPING_MAP = new Lazy<>(() ->
     ImmutableMap.<Block, Block>builder()
       .put(MintBootstrap.getBlock("oak_log_stairs"),       MintBootstrap.getBlock("stripped_oak_log_stairs"))

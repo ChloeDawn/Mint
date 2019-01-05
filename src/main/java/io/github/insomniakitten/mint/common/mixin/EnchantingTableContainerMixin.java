@@ -34,18 +34,23 @@ import java.util.Random;
 
 @Mixin(EnchantingTableContainer.class)
 final class EnchantingTableContainerMixin {
+  /**
+   * @see EnchantingTableContainerMixin
+   */
   private final Random mint$random = new Random();
 
   private EnchantingTableContainerMixin() {}
 
-  @Redirect(
-    method = "onContentChanged",
-    at = @At(
-      value = "INVOKE",
-      target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"
-    ),
-    require = 6
-  )
+  /**
+   * Redirects the blockstate query for nearby bookshelves to determine the presence of a bookshelf slab
+   * block or bookshelves stairs block. There is a 50% chance for a slab to be considered a bookshelf
+   * and a 75% chance for stairs to be considered a bookshelf when returning from this redirection.
+   *
+   * @return The queried blockstate, or a bookshelf blockstate if conditions are met
+   * @reason To allow bookshelf slabs and stairs to contribute to the enchantment power
+   * @author InsomniaKitten
+   */
+  @Redirect(method = "onContentChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"), require = 6)
   private BlockState mint$onContentsChanged$getBlock(final World world, final BlockPos position) {
     final BlockState state = world.getBlockState(position);
     final Block block = state.getBlock();

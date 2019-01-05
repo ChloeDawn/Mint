@@ -35,6 +35,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 final class PlantBlockMixin {
   private PlantBlockMixin() {}
 
+  /**
+   * Determines if the block this method is invoked on is a grass slab block or grass stairs block
+   * and whether its current state provides  a valid surface for planting
+   *
+   * @reason To allow for planting on top of grass slabs and stairs
+   * @author InsomniaKitten
+   */
   @Inject(method = "canPlantOnTop", at = @At("HEAD"), cancellable = true)
   private void mint$canPlantOnTop(final BlockState state, final BlockView view, final BlockPos position, final CallbackInfoReturnable<Boolean> cir) {
     final Block block = state.getBlock();

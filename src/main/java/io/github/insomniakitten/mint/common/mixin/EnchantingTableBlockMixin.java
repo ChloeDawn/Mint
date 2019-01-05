@@ -36,14 +36,15 @@ import java.util.Random;
 final class EnchantingTableBlockMixin {
   private EnchantingTableBlockMixin() {}
 
-  @Inject(
-    method = "randomDisplayTick",
-    at = @At(
-      value = "INVOKE",
-      target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"
-    ),
-    locals = LocalCapture.CAPTURE_FAILHARD
-  )
+  /**
+   * Injects a blockstate query alongside the existing query to determine the presence of a
+   * bookshelf slab block or bookshelves stairs block. If a slab or stairs are found, particles
+   * will be spawned in the same fashion as they are spawned for a bookshelf block
+   *
+   * @reason To allow bookshelf slabs and stairs to generate enchant particles
+   * @author InsomniaKitten
+   */
+  @Inject(method = "randomDisplayTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"), locals = LocalCapture.CAPTURE_FAILHARD)
   private void mint$randomDisplayTick(
     final BlockState state,
     final World world,
