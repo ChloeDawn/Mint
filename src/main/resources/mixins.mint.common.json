@@ -7,7 +7,6 @@
   "refmap": "mixins.mint.refmap.json",
   "mixins": [
     "AxeItemMixin",
-    "BlockCrackParticleMixin",
     "EnchantingTableBlockMixin",
     "EnchantingTableContainerMixin",
     "PlantBlockMixin",

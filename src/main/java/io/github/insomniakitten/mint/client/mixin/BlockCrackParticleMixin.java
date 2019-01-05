@@ -1,4 +1,4 @@
-package io.github.insomniakitten.mint.common.mixin;
+package io.github.insomniakitten.mint.client.mixin;
 
 import io.github.insomniakitten.mint.common.block.GrassSlabBlock;
 import io.github.insomniakitten.mint.common.block.GrassStairsBlock;
