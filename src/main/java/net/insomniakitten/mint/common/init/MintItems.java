@@ -267,9 +267,6 @@ final class MintItems {
     this.registerBlockItem("ice_brick_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("ice_brick_slab", ItemGroup.BUILDING_BLOCKS);
 
-    this.registerBlockItem("red_nether_brick_stairs", ItemGroup.BUILDING_BLOCKS);
-    this.registerBlockItem("red_nether_brick_slab", ItemGroup.BUILDING_BLOCKS);
-
     this.registerBlockItem("dirt_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("dirt_slab", ItemGroup.BUILDING_BLOCKS);
 

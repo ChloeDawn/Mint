@@ -285,9 +285,6 @@ final class MintBlocks {
     this.registerBlock("ice_brick_stairs", new IceStairsBlock(iceBricks));
     this.registerBlock("ice_brick_slab", new IceSlabBlock(iceBricks));
 
-    this.registerBlock("red_nether_brick_stairs", new SimpleStairsBlock(Blocks.RED_NETHER_BRICKS));
-    this.registerBlock("red_nether_brick_slab", new SimpleSlabBlock(Blocks.RED_NETHER_BRICKS));
-
     this.registerBlock("dirt_stairs", new DirtStairsBlock());
     this.registerBlock("dirt_slab", new DirtSlabBlock());
 
