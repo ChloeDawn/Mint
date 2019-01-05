@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "mint:block/green_stained_glass_slab" },
+    "type=top": { "model": "mint:block/green_stained_glass_slab_top" },
+    "type=double": { "model": "minecraft:block/green_stained_glass" }
+  }
+}

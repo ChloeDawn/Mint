@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "mint:block/light_blue_stained_glass_slab" },
+    "type=top": { "model": "mint:block/light_blue_stained_glass_slab_top" },
+    "type=double": { "model": "minecraft:block/light_blue_stained_glass" }
+  }
+}

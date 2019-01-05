@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "mint:block/blue_concrete_slab" },
+    "type=top": { "model": "mint:block/blue_concrete_slab_top" },
+    "type=double": { "model": "minecraft:block/blue_concrete" }
+  }
+}
