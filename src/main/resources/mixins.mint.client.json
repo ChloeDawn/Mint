@@ -3,7 +3,7 @@
   "minVersion": "0.7.11",
   "compatibilityLevel": "JAVA_8",
   "target": "@environment(DEFAULT)",
-  "package": "net.insomniakitten.mint.client.mixin",
+  "package": "io.github.insomniakitten.mint.client.mixin",
   "refmap": "mixins.mint.refmap.json",
   "client": [
   ],
