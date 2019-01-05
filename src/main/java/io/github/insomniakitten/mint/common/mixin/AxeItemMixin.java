@@ -81,7 +81,7 @@ final class AxeItemMixin {
    * @see BlockStates#copyTo(BlockState, BlockState)
    */
   @Redirect(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z"))
-  private boolean cloneAndSetBlockState(final World world, final BlockPos position, final BlockState state, final int flags) {
+  private boolean mint$useOnBlock$setBlockState(final World world, final BlockPos position, final BlockState state, final int flags) {
     final BlockState original = world.getBlockState(position);
     final Block block = original.getBlock();
 
