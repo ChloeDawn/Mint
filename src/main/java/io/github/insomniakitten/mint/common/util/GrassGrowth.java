@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
  */
 public final class GrassGrowth {
   private static final BiMap<Block, Block> CONVERSION_MAP = ImmutableBiMap.of(
-    Blocks.DIRT,                      Blocks.GRASS_BLOCK,
+    Blocks.DIRT,                           Blocks.GRASS_BLOCK,
     MintBootstrap.getBlock("dirt_stairs"), MintBootstrap.getBlock("grass_block_stairs"),
     MintBootstrap.getBlock("dirt_slab"),   MintBootstrap.getBlock("grass_block_slab")
   );
