@@ -1,7 +1,6 @@
 package io.github.insomniakitten.mint.common;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,25 +44,5 @@ public final class Mint {
   public static Logger getLogger(final String topic) {
     Preconditions.checkArgument(!topic.isEmpty(), "Topic cannot be empty");
     return LogManager.getLogger(Mint.ID + '.' + topic);
-  }
-
-  /**
-   * Determines if the runtime is deobfuscated, through looking up a field by
-   * its deobfuscated name in a silent try/catch. If the lookup fails, it
-   * is assumed that the runtime is obfuscated, at least to an extent.
-   * The result of this lookup is cached to {@link Mint#deobfRuntime}
-   *
-   * @return True if the runtime is deobfuscated to an extent
-   */
-  public static boolean isRuntimeDeobfuscated() {
-    if (Mint.deobfRuntime == null) {
-      try {
-        Blocks.class.getDeclaredField("AIR");
-        Mint.deobfRuntime = true;
-      } catch (final NoSuchFieldException ignored) {
-        Mint.deobfRuntime = false;
-      }
-    }
-    return Mint.deobfRuntime;
   }
 }
