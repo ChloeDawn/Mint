@@ -260,12 +260,8 @@ final class MintItems {
     this.registerBlockItem("stripped_acacia_wood_slab", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("stripped_dark_oak_wood_slab", ItemGroup.BUILDING_BLOCKS);
 
-    this.registerBlockItem("ice_pillar", ItemGroup.BUILDING_BLOCKS);
-    this.registerBlockItem("ice_bricks", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("ice_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("ice_slab", ItemGroup.BUILDING_BLOCKS);
-    this.registerBlockItem("ice_brick_stairs", ItemGroup.BUILDING_BLOCKS);
-    this.registerBlockItem("ice_brick_slab", ItemGroup.BUILDING_BLOCKS);
 
     this.registerBlockItem("dirt_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("dirt_slab", ItemGroup.BUILDING_BLOCKS);
