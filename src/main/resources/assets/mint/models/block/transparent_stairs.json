@@ -2,10 +2,7 @@
   "__comment": "Copyright © InsomniaKitten 2018",
   "parent": "block/block",
   "textures": {
-    "particle": "mint:block/ice_bricks",
-    "bottom": "mint:block/ice_bricks",
-    "top": "mint:block/ice_bricks",
-    "side": "mint:block/ice_bricks"
+    "particle": "#side"
   },
   "elements": [
     {

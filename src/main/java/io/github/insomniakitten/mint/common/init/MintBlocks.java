@@ -3,11 +3,12 @@ package io.github.insomniakitten.mint.common.init;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
 import io.github.insomniakitten.mint.common.Mint;
+import io.github.insomniakitten.mint.common.block.BookshelfSlabBlock;
+import io.github.insomniakitten.mint.common.block.BookshelfStairsBlock;
 import io.github.insomniakitten.mint.common.block.DirtSlabBlock;
 import io.github.insomniakitten.mint.common.block.DirtStairsBlock;
 import io.github.insomniakitten.mint.common.block.GrassSlabBlock;
 import io.github.insomniakitten.mint.common.block.GrassStairsBlock;
-import io.github.insomniakitten.mint.common.block.IcePillarBlock;
 import io.github.insomniakitten.mint.common.block.IceSlabBlock;
 import io.github.insomniakitten.mint.common.block.IceStairsBlock;
 import io.github.insomniakitten.mint.common.block.LogSlabBlock;
@@ -18,11 +19,8 @@ import io.github.insomniakitten.mint.common.block.SimpleStairsBlock;
 import io.github.insomniakitten.mint.common.block.TranslucentSlabBlock;
 import io.github.insomniakitten.mint.common.block.TranslucentStairsBlock;
 import io.github.insomniakitten.mint.common.state.RegistrationState;
-import io.github.insomniakitten.mint.common.block.BookshelfSlabBlock;
-import io.github.insomniakitten.mint.common.block.BookshelfStairsBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.IceBlock;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DefaultMappedRegistry;
 import net.minecraft.util.registry.Registry;
@@ -275,15 +273,8 @@ final class MintBlocks {
     this.registerBlock("stripped_acacia_wood_slab", new LogSlabBlock(Blocks.ACACIA_LOG));
     this.registerBlock("stripped_dark_oak_wood_slab", new LogSlabBlock(Blocks.DARK_OAK_LOG));
 
-    this.registerBlock("ice_pillar", new IcePillarBlock(Blocks.ICE));
     this.registerBlock("ice_stairs", new IceStairsBlock(Blocks.ICE));
     this.registerBlock("ice_slab", new IceSlabBlock(Blocks.ICE));
-
-    final Block iceBricks = new IceBlock(Block.Settings.copy(Blocks.ICE));
-
-    this.registerBlock("ice_bricks", iceBricks);
-    this.registerBlock("ice_brick_stairs", new IceStairsBlock(iceBricks));
-    this.registerBlock("ice_brick_slab", new IceSlabBlock(iceBricks));
 
     this.registerBlock("dirt_stairs", new DirtStairsBlock());
     this.registerBlock("dirt_slab", new DirtSlabBlock());

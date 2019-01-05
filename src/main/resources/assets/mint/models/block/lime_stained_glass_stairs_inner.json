@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/inner_stairs",
+  "parent": "mint:block/transparent_inner_stairs",
   "textures": {
     "bottom": "minecraft:block/lime_stained_glass",
     "top": "minecraft:block/lime_stained_glass",

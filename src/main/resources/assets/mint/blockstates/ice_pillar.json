@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "axis=y": { "model": "mint:block/ice_pillar" },
-    "axis=z": { "model": "mint:block/ice_pillar", "x": 90 },
-    "axis=x": { "model": "mint:block/ice_pillar", "x": 90, "y": 90 }
-  }
-}
