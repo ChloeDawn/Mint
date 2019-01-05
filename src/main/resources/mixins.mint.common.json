@@ -8,6 +8,8 @@
   "mixins": [
     "AxeItemMixin",
     "BlockCrackParticleMixin",
+    "EnchantingTableBlockMixin",
+    "EnchantingTableContainerMixin",
     "PlantBlockMixin",
     "SpreadableBlockMixin",
     "TransparentBlockMixin"
