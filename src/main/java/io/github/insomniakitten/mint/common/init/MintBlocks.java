@@ -16,10 +16,11 @@ import io.github.insomniakitten.mint.common.block.LogStairsBlock;
 import io.github.insomniakitten.mint.common.block.SandLayerBlock;
 import io.github.insomniakitten.mint.common.block.SimpleSlabBlock;
 import io.github.insomniakitten.mint.common.block.SimpleStairsBlock;
-import io.github.insomniakitten.mint.common.block.TranslucentSlabBlock;
-import io.github.insomniakitten.mint.common.block.TranslucentStairsBlock;
+import io.github.insomniakitten.mint.common.block.TransparentSlabBlock;
+import io.github.insomniakitten.mint.common.block.TransparentStairsBlock;
 import io.github.insomniakitten.mint.common.state.RegistrationState;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DefaultMappedRegistry;
@@ -45,6 +46,11 @@ final class MintBlocks {
   private volatile RegistrationState state = RegistrationState.initial();
 
   private MintBlocks() {}
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).add("state", this.state).toString();
+  }
 
   /**
    * Retrieves an {@link Block} for the given name from the block registry
@@ -87,11 +93,6 @@ final class MintBlocks {
     }
 
     return Objects.requireNonNull(Registry.BLOCK.getId(block), "name");
-  }
-
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("state", this.state).toString();
   }
 
   /**
@@ -183,39 +184,41 @@ final class MintBlocks {
     this.registerBlock("red_concrete_slab", new SimpleSlabBlock(Blocks.RED_CONCRETE));
     this.registerBlock("black_concrete_slab", new SimpleSlabBlock(Blocks.BLACK_CONCRETE));
 
-    this.registerBlock("white_stained_glass_stairs", new TranslucentStairsBlock(Blocks.WHITE_STAINED_GLASS));
-    this.registerBlock("orange_stained_glass_stairs", new TranslucentStairsBlock(Blocks.ORANGE_STAINED_GLASS));
-    this.registerBlock("magenta_stained_glass_stairs", new TranslucentStairsBlock(Blocks.MAGENTA_STAINED_GLASS));
-    this.registerBlock("light_blue_stained_glass_stairs", new TranslucentStairsBlock(Blocks.LIGHT_BLUE_STAINED_GLASS));
-    this.registerBlock("yellow_stained_glass_stairs", new TranslucentStairsBlock(Blocks.YELLOW_STAINED_GLASS));
-    this.registerBlock("lime_stained_glass_stairs", new TranslucentStairsBlock(Blocks.LIME_STAINED_GLASS));
-    this.registerBlock("pink_stained_glass_stairs", new TranslucentStairsBlock(Blocks.PINK_STAINED_GLASS));
-    this.registerBlock("gray_stained_glass_stairs", new TranslucentStairsBlock(Blocks.GRAY_STAINED_GLASS));
-    this.registerBlock("light_gray_stained_glass_stairs", new TranslucentStairsBlock(Blocks.LIGHT_GRAY_STAINED_GLASS));
-    this.registerBlock("cyan_stained_glass_stairs", new TranslucentStairsBlock(Blocks.CYAN_STAINED_GLASS));
-    this.registerBlock("purple_stained_glass_stairs", new TranslucentStairsBlock(Blocks.PURPLE_STAINED_GLASS));
-    this.registerBlock("blue_stained_glass_stairs", new TranslucentStairsBlock(Blocks.BLUE_STAINED_GLASS));
-    this.registerBlock("brown_stained_glass_stairs", new TranslucentStairsBlock(Blocks.BROWN_STAINED_GLASS));
-    this.registerBlock("green_stained_glass_stairs", new TranslucentStairsBlock(Blocks.GREEN_STAINED_GLASS));
-    this.registerBlock("red_stained_glass_stairs", new TranslucentStairsBlock(Blocks.RED_STAINED_GLASS));
-    this.registerBlock("black_stained_glass_stairs", new TranslucentStairsBlock(Blocks.BLACK_STAINED_GLASS));
+    this.registerBlock("glass_stairs", new TransparentStairsBlock(Blocks.GLASS, BlockRenderLayer.CUTOUT));
+    this.registerBlock("white_stained_glass_stairs", new TransparentStairsBlock(Blocks.WHITE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("orange_stained_glass_stairs", new TransparentStairsBlock(Blocks.ORANGE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("magenta_stained_glass_stairs", new TransparentStairsBlock(Blocks.MAGENTA_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("light_blue_stained_glass_stairs", new TransparentStairsBlock(Blocks.LIGHT_BLUE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("yellow_stained_glass_stairs", new TransparentStairsBlock(Blocks.YELLOW_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("lime_stained_glass_stairs", new TransparentStairsBlock(Blocks.LIME_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("pink_stained_glass_stairs", new TransparentStairsBlock(Blocks.PINK_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("gray_stained_glass_stairs", new TransparentStairsBlock(Blocks.GRAY_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("light_gray_stained_glass_stairs", new TransparentStairsBlock(Blocks.LIGHT_GRAY_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("cyan_stained_glass_stairs", new TransparentStairsBlock(Blocks.CYAN_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("purple_stained_glass_stairs", new TransparentStairsBlock(Blocks.PURPLE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("blue_stained_glass_stairs", new TransparentStairsBlock(Blocks.BLUE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("brown_stained_glass_stairs", new TransparentStairsBlock(Blocks.BROWN_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("green_stained_glass_stairs", new TransparentStairsBlock(Blocks.GREEN_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("red_stained_glass_stairs", new TransparentStairsBlock(Blocks.RED_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("black_stained_glass_stairs", new TransparentStairsBlock(Blocks.BLACK_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
 
-    this.registerBlock("white_stained_glass_slab", new TranslucentSlabBlock(Blocks.WHITE_STAINED_GLASS));
-    this.registerBlock("orange_stained_glass_slab", new TranslucentSlabBlock(Blocks.ORANGE_STAINED_GLASS));
-    this.registerBlock("magenta_stained_glass_slab", new TranslucentSlabBlock(Blocks.MAGENTA_STAINED_GLASS));
-    this.registerBlock("light_blue_stained_glass_slab", new TranslucentSlabBlock(Blocks.LIGHT_BLUE_STAINED_GLASS));
-    this.registerBlock("yellow_stained_glass_slab", new TranslucentSlabBlock(Blocks.YELLOW_STAINED_GLASS));
-    this.registerBlock("lime_stained_glass_slab", new TranslucentSlabBlock(Blocks.LIME_STAINED_GLASS));
-    this.registerBlock("pink_stained_glass_slab", new TranslucentSlabBlock(Blocks.PINK_STAINED_GLASS));
-    this.registerBlock("gray_stained_glass_slab", new TranslucentSlabBlock(Blocks.GRAY_STAINED_GLASS));
-    this.registerBlock("light_gray_stained_glass_slab", new TranslucentSlabBlock(Blocks.LIGHT_GRAY_STAINED_GLASS));
-    this.registerBlock("cyan_stained_glass_slab", new TranslucentSlabBlock(Blocks.CYAN_STAINED_GLASS));
-    this.registerBlock("purple_stained_glass_slab", new TranslucentSlabBlock(Blocks.PURPLE_STAINED_GLASS));
-    this.registerBlock("blue_stained_glass_slab", new TranslucentSlabBlock(Blocks.BLUE_STAINED_GLASS));
-    this.registerBlock("brown_stained_glass_slab", new TranslucentSlabBlock(Blocks.BROWN_STAINED_GLASS));
-    this.registerBlock("green_stained_glass_slab", new TranslucentSlabBlock(Blocks.GREEN_STAINED_GLASS));
-    this.registerBlock("red_stained_glass_slab", new TranslucentSlabBlock(Blocks.RED_STAINED_GLASS));
-    this.registerBlock("black_stained_glass_slab", new TranslucentSlabBlock(Blocks.BLACK_STAINED_GLASS));
+    this.registerBlock("glass_slab", new TransparentSlabBlock(Blocks.GLASS, BlockRenderLayer.CUTOUT));
+    this.registerBlock("white_stained_glass_slab", new TransparentSlabBlock(Blocks.WHITE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("orange_stained_glass_slab", new TransparentSlabBlock(Blocks.ORANGE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("magenta_stained_glass_slab", new TransparentSlabBlock(Blocks.MAGENTA_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("light_blue_stained_glass_slab", new TransparentSlabBlock(Blocks.LIGHT_BLUE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("yellow_stained_glass_slab", new TransparentSlabBlock(Blocks.YELLOW_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("lime_stained_glass_slab", new TransparentSlabBlock(Blocks.LIME_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("pink_stained_glass_slab", new TransparentSlabBlock(Blocks.PINK_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("gray_stained_glass_slab", new TransparentSlabBlock(Blocks.GRAY_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("light_gray_stained_glass_slab", new TransparentSlabBlock(Blocks.LIGHT_GRAY_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("cyan_stained_glass_slab", new TransparentSlabBlock(Blocks.CYAN_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("purple_stained_glass_slab", new TransparentSlabBlock(Blocks.PURPLE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("blue_stained_glass_slab", new TransparentSlabBlock(Blocks.BLUE_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("brown_stained_glass_slab", new TransparentSlabBlock(Blocks.BROWN_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("green_stained_glass_slab", new TransparentSlabBlock(Blocks.GREEN_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("red_stained_glass_slab", new TransparentSlabBlock(Blocks.RED_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
+    this.registerBlock("black_stained_glass_slab", new TransparentSlabBlock(Blocks.BLACK_STAINED_GLASS, BlockRenderLayer.TRANSLUCENT));
 
     this.registerBlock("oak_log_stairs", new LogStairsBlock(Blocks.OAK_LOG));
     this.registerBlock("spruce_log_stairs", new LogStairsBlock(Blocks.SPRUCE_LOG));
@@ -275,6 +278,9 @@ final class MintBlocks {
 
     this.registerBlock("ice_stairs", new IceStairsBlock(Blocks.ICE));
     this.registerBlock("ice_slab", new IceSlabBlock(Blocks.ICE));
+
+    this.registerBlock("packed_ice_stairs", new SimpleStairsBlock(Blocks.PACKED_ICE));
+    this.registerBlock("packed_ice_slab", new SimpleSlabBlock(Blocks.PACKED_ICE));
 
     this.registerBlock("dirt_stairs", new DirtStairsBlock());
     this.registerBlock("dirt_slab", new DirtSlabBlock());

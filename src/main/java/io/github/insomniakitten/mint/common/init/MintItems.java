@@ -170,6 +170,7 @@ final class MintItems {
     this.registerBlockItem("red_concrete_slab", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("black_concrete_slab", ItemGroup.BUILDING_BLOCKS);
 
+    this.registerBlockItem("glass_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("white_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("orange_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("magenta_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
@@ -187,6 +188,7 @@ final class MintItems {
     this.registerBlockItem("red_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("black_stained_glass_stairs", ItemGroup.BUILDING_BLOCKS);
 
+    this.registerBlockItem("glass_slab", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("white_stained_glass_slab", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("orange_stained_glass_slab", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("magenta_stained_glass_slab", ItemGroup.BUILDING_BLOCKS);
@@ -262,6 +264,9 @@ final class MintItems {
 
     this.registerBlockItem("ice_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("ice_slab", ItemGroup.BUILDING_BLOCKS);
+
+    this.registerBlockItem("packed_ice_stairs", ItemGroup.BUILDING_BLOCKS);
+    this.registerBlockItem("packed_ice_slab", ItemGroup.BUILDING_BLOCKS);
 
     this.registerBlockItem("dirt_stairs", ItemGroup.BUILDING_BLOCKS);
     this.registerBlockItem("dirt_slab", ItemGroup.BUILDING_BLOCKS);

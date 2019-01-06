@@ -1,6 +1,7 @@
 package io.github.insomniakitten.mint.common.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,9 +15,9 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class IceSlabBlock extends TranslucentSlabBlock implements MeltableBlock {
+public class IceSlabBlock extends TransparentSlabBlock implements MeltableBlock {
   public IceSlabBlock(final Block material) {
-    super(material);
+    super(material, BlockRenderLayer.TRANSLUCENT);
   }
 
   @Override
