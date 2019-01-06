@@ -42,24 +42,19 @@ final class BlockStateMixin {
     final Direction side,
     final CallbackInfoReturnable<VoxelShape> cir
   ) {
-    final Block block = BlockState.class.cast(this).getBlock();
+    final Block blockA = BlockState.class.cast(this).getBlock();
 
-    if (block instanceof TransparentStairsBlock || block instanceof TransparentSlabBlock) {
-      if (this.mint$doMimickedBlocksDiffer(block, view.getBlockState(position.offset(side)).getBlock())) {
+    if (blockA instanceof TransparentStairsBlock || blockA instanceof TransparentSlabBlock) {
+      final MaterialMimickingBlock mimicA = (MaterialMimickingBlock) blockA;
+      final Block blockB = view.getBlockState(position.offset(side)).getBlock();
+      if (blockB instanceof TransparentStairsBlock || blockB instanceof TransparentSlabBlock) {
+        final MaterialMimickingBlock mimicB = (MaterialMimickingBlock) blockB;
+        if (mimicA.getMimickedMaterial() != mimicB.getMimickedMaterial()) {
+          cir.setReturnValue(VoxelShapes.empty());
+        }
+      } else if (mimicA.getMimickedMaterial() != blockB || mimicA != blockB) {
         cir.setReturnValue(VoxelShapes.empty());
       }
     }
-  }
-
-  private boolean mint$doMimickedBlocksDiffer(
-    final Block block,
-    final Block neighbor
-  ) {
-    final MaterialMimickingBlock a = (MaterialMimickingBlock) block;
-    if (neighbor instanceof MaterialMimickingBlock) {
-      final MaterialMimickingBlock b = (MaterialMimickingBlock) neighbor;
-      return a.getMimickedMaterial() != b.getMimickedMaterial();
-    }
-    return a.getMimickedMaterial() != neighbor || a != neighbor;
   }
 }
