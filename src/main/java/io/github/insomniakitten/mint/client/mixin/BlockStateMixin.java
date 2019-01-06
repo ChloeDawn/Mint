@@ -16,8 +16,7 @@
 
 package io.github.insomniakitten.mint.client.mixin;
 
-import io.github.insomniakitten.mint.common.block.SimpleSlabBlock;
-import io.github.insomniakitten.mint.common.block.SimpleStairsBlock;
+import io.github.insomniakitten.mint.common.block.MaterialMimickingBlock;
 import io.github.insomniakitten.mint.common.block.TransparentSlabBlock;
 import io.github.insomniakitten.mint.common.block.TransparentStairsBlock;
 import net.minecraft.block.Block;
@@ -43,19 +42,24 @@ final class BlockStateMixin {
     final Direction side,
     final CallbackInfoReturnable<VoxelShape> cir
   ) {
-    final BlockState self = BlockState.class.cast(this);
-    final Block block = self.getBlock();
-    if (block instanceof TransparentStairsBlock) {
-      final SimpleStairsBlock stairs = (SimpleStairsBlock) block;
-      final BlockState other = view.getBlockState(position.offset(side));
-      final Block otherBlock = other.getBlock();
-      if (otherBlock instanceof TransparentSlabBlock) {
-        if (stairs.getMaterial() != ((SimpleSlabBlock) otherBlock).getMaterial()) {
-          cir.setReturnValue(VoxelShapes.empty());
-        }
-      } else if (stairs.getMaterial() != other.getBlock() || stairs != other.getBlock()) {
+    final Block block = BlockState.class.cast(this).getBlock();
+
+    if (block instanceof TransparentStairsBlock || block instanceof TransparentSlabBlock) {
+      if (this.mint$doMimickedBlocksDiffer(block, view.getBlockState(position.offset(side)).getBlock())) {
         cir.setReturnValue(VoxelShapes.empty());
       }
     }
+  }
+
+  private boolean mint$doMimickedBlocksDiffer(
+    final Block block,
+    final Block neighbor
+  ) {
+    final MaterialMimickingBlock a = (MaterialMimickingBlock) block;
+    if (neighbor instanceof MaterialMimickingBlock) {
+      final MaterialMimickingBlock b = (MaterialMimickingBlock) neighbor;
+      return a.getMimickedMaterial() != b.getMimickedMaterial();
+    }
+    return a.getMimickedMaterial() != neighbor || a != neighbor;
   }
 }

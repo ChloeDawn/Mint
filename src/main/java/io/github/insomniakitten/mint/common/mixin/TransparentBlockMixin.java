@@ -1,7 +1,6 @@
 package io.github.insomniakitten.mint.common.mixin;
 
-import io.github.insomniakitten.mint.common.block.SimpleSlabBlock;
-import io.github.insomniakitten.mint.common.block.SimpleStairsBlock;
+import io.github.insomniakitten.mint.common.block.MaterialMimickingBlock;
 import io.github.insomniakitten.mint.common.block.TransparentSlabBlock;
 import io.github.insomniakitten.mint.common.block.TransparentStairsBlock;
 import net.minecraft.block.Block;
@@ -35,7 +34,7 @@ public final class TransparentBlockMixin {
     final Block a = state.getBlock();
     final Block b = other.getBlock();
 
-    if (b instanceof TransparentSlabBlock && a == ((SimpleSlabBlock) b).getMaterial()) {
+    if (b instanceof TransparentSlabBlock && a == ((MaterialMimickingBlock) b).getMimickedMaterial()) {
       if (SlabType.DOUBLE == other.get(Properties.SLAB_TYPE)) {
         cir.setReturnValue(true);
         return;
@@ -49,7 +48,7 @@ public final class TransparentBlockMixin {
       }
     }
 
-    if (b instanceof TransparentStairsBlock && a == ((SimpleStairsBlock) b).getMaterial()) {
+    if (b instanceof TransparentStairsBlock && a == ((MaterialMimickingBlock) b).getMimickedMaterial()) {
       if (side.getOpposite() == other.get(Properties.FACING_HORIZONTAL)) {
         cir.setReturnValue(true);
         return;
