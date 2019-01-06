@@ -16,7 +16,11 @@
 
 package io.github.insomniakitten.mint.client.mixin;
 
+import io.github.insomniakitten.mint.common.block.SimpleSlabBlock;
+import io.github.insomniakitten.mint.common.block.SimpleStairsBlock;
+import io.github.insomniakitten.mint.common.block.TransparentSlabBlock;
 import io.github.insomniakitten.mint.common.block.TransparentStairsBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -40,9 +44,16 @@ final class BlockStateMixin {
     final CallbackInfoReturnable<VoxelShape> cir
   ) {
     final BlockState self = BlockState.class.cast(this);
-    if (self.getBlock() instanceof TransparentStairsBlock) {
+    final Block block = self.getBlock();
+    if (block instanceof TransparentStairsBlock) {
+      final SimpleStairsBlock stairs = (SimpleStairsBlock) block;
       final BlockState other = view.getBlockState(position.offset(side));
-      if (self.getBlock() != other.getBlock()) {
+      final Block otherBlock = other.getBlock();
+      if (otherBlock instanceof TransparentSlabBlock) {
+        if (stairs.getMaterial() != ((SimpleSlabBlock) otherBlock).getMaterial()) {
+          cir.setReturnValue(VoxelShapes.empty());
+        }
+      } else if (stairs.getMaterial() != other.getBlock() || stairs != other.getBlock()) {
         cir.setReturnValue(VoxelShapes.empty());
       }
     }

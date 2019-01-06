@@ -1,11 +1,13 @@
 package io.github.insomniakitten.mint.common.mixin;
 
-import io.github.insomniakitten.mint.common.block.IceSlabBlock;
-import io.github.insomniakitten.mint.common.block.IceStairsBlock;
+import io.github.insomniakitten.mint.common.block.SimpleSlabBlock;
+import io.github.insomniakitten.mint.common.block.SimpleStairsBlock;
+import io.github.insomniakitten.mint.common.block.TransparentSlabBlock;
+import io.github.insomniakitten.mint.common.block.TransparentStairsBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.TransparentBlock;
+import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
@@ -22,41 +24,41 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(TransparentBlock.class)
 public final class TransparentBlockMixin {
   /**
-   * Determines if the block this method is invoked on is an ice block, and whether it is adjacent
-   * to other ice blocks, slabs, and stairs, in order to decide whether the method should return
-   * early with a `true` value.
+   * Determines whether this block is adjacent to transparent slabs and stairs or equal material type,
+   * in order to decide whether the method should return early with a `true` value.
    *
-   * @reason To allow for culling of ice blocks against ice stairs and slabs
+   * @reason To allow for culling of blocks against stairs and slabs of equal type
    * @author InsomniaKitten
    */
   @Inject(method = "isSideVisible", at = @At("HEAD"), cancellable = true)
   private void mint$isSideInvisible(final BlockState state, final BlockState other, final Direction side, final CallbackInfoReturnable<Boolean> cir) {
-    if (Blocks.ICE != state.getBlock()) {
-      return;
-    }
+    final Block a = state.getBlock();
+    final Block b = other.getBlock();
 
-    final Block block = other.getBlock();
-
-    if (block instanceof IceSlabBlock) {
-      if (side.getAxis().isVertical()) {
-        cir.setReturnValue(true);
-        return;
-      }
-
+    if (b instanceof TransparentSlabBlock && a == ((SimpleSlabBlock) b).getMaterial()) {
       if (SlabType.DOUBLE == other.get(Properties.SLAB_TYPE)) {
         cir.setReturnValue(true);
         return;
       }
+
+      if (side.getAxis().isVertical()) {
+        if ((Direction.UP == side) == (SlabType.BOTTOM == other.get(Properties.SLAB_TYPE))) {
+          cir.setReturnValue(true);
+          return;
+        }
+      }
     }
 
-    if (block instanceof IceStairsBlock) {
-      if (side.getAxis().isVertical()) {
+    if (b instanceof TransparentStairsBlock && a == ((SimpleStairsBlock) b).getMaterial()) {
+      if (side.getOpposite() == other.get(Properties.FACING_HORIZONTAL)) {
         cir.setReturnValue(true);
         return;
       }
 
-      if (side.getOpposite() == other.get(Properties.FACING_HORIZONTAL)) {
-        cir.setReturnValue(true);
+      if (side.getAxis().isVertical()) {
+        if ((Direction.UP == side) == (BlockHalf.BOTTOM == other.get(Properties.BLOCK_HALF))) {
+          cir.setReturnValue(true);
+        }
       }
     }
   }
