@@ -6,7 +6,8 @@
   "package": "io.github.insomniakitten.mint.client.mixin",
   "refmap": "mixins.mint.refmap.json",
   "client": [
-    "BlockCrackParticleMixin"
+    "BlockCrackParticleMixin",
+    "BlockStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1,

@@ -18,25 +18,20 @@ public class TransparentSlabBlock extends SimpleSlabBlock {
   }
 
   @Override
-  public boolean isSimpleFullBlock(final BlockState state, final BlockView view, final BlockPos position) {
-    return false;
-  }
-
-  @Override
-  @Deprecated // isSideInvisible
-  public boolean isSideVisible(final BlockState state, final BlockState other, final Direction face) {
-    if (this != other.getBlock()) {
+  @Deprecated
+  public boolean isSideVisible(final BlockState state, final BlockState neighbor, final Direction side) {
+    if (this != neighbor.getBlock()) {
       return false;
     }
 
-    final SlabType type = other.get(Properties.SLAB_TYPE);
+    final SlabType type = neighbor.get(Properties.SLAB_TYPE);
 
     if (SlabType.DOUBLE == type) {
       return true;
     }
 
-    if (face.getAxis().isVertical()) {
-      return face == (SlabType.TOP == type ? Direction.DOWN : Direction.UP);
+    if (side.getAxis().isVertical()) {
+      return side == (SlabType.TOP == type ? Direction.DOWN : Direction.UP);
     }
 
     return state.get(Properties.SLAB_TYPE) == type;

@@ -40,7 +40,7 @@ public class IceSlabBlock extends TransparentSlabBlock implements MeltableBlock 
 
   @Override
   @Deprecated
-  public boolean isSideVisible(final BlockState state, final BlockState other, final Direction side) {
-    return Blocks.ICE == other.getBlock() || super.isSideVisible(state, other, side);
+  public boolean isSideVisible(final BlockState state, final BlockState neighbor, final Direction side) {
+    return Blocks.ICE == neighbor.getBlock() || super.isSideVisible(state, neighbor, side);
   }
 }
