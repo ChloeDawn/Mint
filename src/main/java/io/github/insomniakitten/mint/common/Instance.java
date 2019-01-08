@@ -53,7 +53,7 @@ public @interface Instance {
         final MissingSuperclassBehavior behavior = options.getMissingSuperclassBehavior();
         switch (behavior) {
           case RETURN_NULL:
-            e.printStackTrace();
+            e.getCause().printStackTrace();
             return null;
           case CRASH:
             final Throwable t = e.getCause();
